@@ -1,5 +1,5 @@
 function DVMax_checker()
-    testing = 0;    
+    testing = 1;    
     maintainer_email_address = 'tuckertomlinson@gmail.com';
     
     try
