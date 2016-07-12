@@ -79,7 +79,7 @@ function DVMax_checker()
         todaysDate = datenum(date);
     
 %         weekendDates = datenum(weekendWaterList(1,2:end));
-        today_is_a_holiday = find(todaysDate == weekendDates)+1;
+        today_is_a_holiday = find(todaysDate == weekendDates)+2;
 
         animals_who_got_water = {};
         animals_who_got_food = {};
