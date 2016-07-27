@@ -1,5 +1,5 @@
 function DVMax_checker()
-    testing = 0;    
+    testing = 1;    
     maintainer_email_address = 'tuckertomlinson@gmail.com';
     
     try
@@ -157,7 +157,7 @@ function DVMax_checker()
                 if ~isempty(last_water_entry)
                     last_water_entry = min(last_water_entry);
                 else
-                    last_water_entry = 1000000;
+                    last_water_entry = [];
                 end
 
                 last_water_restriction_start = inf;
@@ -175,8 +175,13 @@ function DVMax_checker()
                 if last_water_restriction_start < last_free_water_entry                 %% water restricted monkey
                     check_weight = 1;
                     animalList(iMonkey).restricted = 1;
-                    last_water_entry_date = data{last_water_entry,2};
-                    if floor(datenum(last_water_entry_date)) ~= datenum(date)                    
+                    if ~isempty(last_water_entry)
+                        last_water_entry_date = data{last_water_entry,2};
+                        flag=floor(datenum(last_water_entry_date)) ~= datenum(date);
+                    else
+                        flag=true;
+                    end
+                    if flag                    
                         if time < 18
                             monkey_warning(animalList(iMonkey),'NoWater',testing,maintainer_email_address)
                             disp(['Warning: ' animalList(iMonkey).animalName ' has not received water today.'])
