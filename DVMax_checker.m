@@ -1,5 +1,5 @@
 function DVMax_checker()
-    testing = 1;    
+    testing = 0;    
     maintainer_email_address = 'tuckertomlinson@gmail.com';
     
     try
@@ -70,7 +70,7 @@ function DVMax_checker()
 
 
         [weekend_water_xls_num,weekend_water_xls,~] = xlsread(MonkeyWaterLocation,3,'','basic');   
-        weekendDates=x2mdate(weekend_water_xls_num(3:end));
+        weekendDates=x2mdate(weekend_water_xls_num(1:end));
         weekendWaterList = weekend_water_xls(2:end,2:end);
 
         [~,weekend_food_xls,~] = xlsread(MonkeyWaterLocation,4,'','basic'); 
@@ -79,7 +79,7 @@ function DVMax_checker()
         todaysDate = datenum(date);
     
 %         weekendDates = datenum(weekendWaterList(1,2:end));
-        today_is_a_holiday = find(todaysDate == weekendDates)+2;
+        today_is_a_holiday = find(todaysDate == weekendDates)+1;%this index is used on the weekendWaterList and weeekendFoodList structures, which truncate only the first index, whereas, weekendDates truncates the first two, thus we add back a single index
 
         animals_who_got_water = {};
         animals_who_got_food = {};
