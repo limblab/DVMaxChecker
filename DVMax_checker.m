@@ -43,8 +43,8 @@ function DVMax_checker()
         time = clock;
         time = time(4);
 % old database:
-        conn = database('OR','dvmax_lmiller','dvmax','Vendor','Oracle',...
-            'DriverType','thin','Server','risdatsvr3.itcs.northwestern.edu','PortNumber',1521); 
+        %conn = database('OR','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatsvr3.itcs.northwestern.edu','PortNumber',1521); 
+        conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
         try
             load('animalList')
             oldAnimalList = animalList;
@@ -67,7 +67,6 @@ function DVMax_checker()
         if ~isequal(animalList2,oldAnimalList2)
             send_monkey_person_email(animalList,peopleList,ccmList,maintainer_email_address)
         end
-
 
         [weekend_water_xls_num,weekend_water_xls,~] = xlsread(MonkeyWaterLocation,3,'','basic');   
         weekendDates=x2mdate(weekend_water_xls_num(1:end));
@@ -277,10 +276,13 @@ function DVMax_checker()
 
 
         % Monkey weight warning
-        if check_weight        
-            if time < 18            
-                lastWeighing = (animalList(iMonkey).body_weight_date(1));
-                if datenum(date) - lastWeighing > 4 
+        if check_weight 
+            lastWeighing = (animalList(iMonkey).body_weight_date(1));
+            if time < 18
+                if datenum(date) - lastWeighing > 6 
+                    disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
+                    monkey_last_warning(animalList(iMonkey),peopleList,'NoWeight',testing,maintainer_email_address);
+                elseif datenum(date) - lastWeighing > 4 
                     disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
                     monkey_weight_warning(animalList(iMonkey),lastWeighing,testing,maintainer_email_address);
                 end
@@ -454,10 +456,15 @@ function monkey_warning(animal,messageType,testing,maintainer_email_address)
 end
 
 function monkey_last_warning(animal,peopleList,message,testing,maintainer_email_address)
-    if strcmpi(message,'NoWater')
-        message = 'water';
-    else
-        message = 'food';
+    switch message
+        case 'NoWater'
+            message = 'water';
+        case 'NoFood'
+            message = 'food';
+        case 'NoWeight'
+            message = 'weekly weight check';
+        otherwise
+            error('monkey_last_warning:badMessage',['did not recognize the message key:', message])
     end
     for iP = 1:length(peopleList)
         if strcmpi(animal.personInCharge,peopleList(iP).Name)
