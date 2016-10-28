@@ -25,11 +25,13 @@ function DVMax_checker()
         
         if ispc
             MonkeyWaterLocation = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\Lab-Wide Animal Info\WeekendWatering\MonkeyWaterData.xlsx';
+            contactListLocation = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\General-Lab-Stuff\checkerData\contacts.xls';
         elseif isunix 
             [~,hostname]=unix('hostname');
             if strcmp(strtrim(hostname),'tucker-pc')
                 %mount point for fsmresfiles on tucker's computer:
                 MonkeyWaterLocation='/media/fsmresfiles/limblab/lab_folder/Lab-Wide Animal Info/WeekendWatering/MonkeyWaterData.xlsx';
+                contactListLocation='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/contacts.xls';
             end
         else
             error('DVMax_checker:systemNotRecognized','This script only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
@@ -42,8 +44,7 @@ function DVMax_checker()
         food_restriction_start_code = 'EP9300';
         time = clock;
         time = time(4);
-% old database:
-        %conn = database('OR','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatsvr3.itcs.northwestern.edu','PortNumber',1521); 
+
         conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
         try
             load('animalList')
@@ -52,20 +53,25 @@ function DVMax_checker()
             oldAnimalList2 = rmfield(oldAnimalList2,'contactNumber');
             oldAnimalList2 = rmfield(oldAnimalList2,'secondarycontactNumber');
             oldAnimalList2 = rmfield(oldAnimalList2,'dateOfWeightUpdate');
+            oldAnimalList2 = rmfield(oldAnimalList2,'TBDate');
+            oldAnimalList2 = rmfield(oldAnimalList2,'secondaryTBDate');
+            
         end
 
-        animalList = load_animal_list(MonkeyWaterLocation);
+        peopleList = readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam');
+        animalList = load_animal_list(MonkeyWaterLocation,peopleList);
         save('animalList','animalList')    
         animalList2 = rmfield(animalList,'idealBodyWeight');
         animalList2 = rmfield(animalList2,'contactNumber');
         animalList2 = rmfield(animalList2,'secondarycontactNumber');
         animalList2 = rmfield(animalList2,'dateOfWeightUpdate');
+        animalList2 = rmfield(animalList2,'TBDate');
+        animalList2 = rmfield(animalList2,'secondaryTBDate');
 
-        peopleList = load_people_list(MonkeyWaterLocation);
-        ccmList = load_ccm_list(MonkeyWaterLocation);    
+        ccmList = readtable(contactListLocation,'FileType','spreadsheet','sheet','CCM'); 
 
         if ~isequal(animalList2,oldAnimalList2)
-            send_monkey_person_email(animalList,peopleList,ccmList,maintainer_email_address)
+            send_monkey_person_email(animalList,peopleList,testing,ccmList,maintainer_email_address)
         end
 
         [weekend_water_xls_num,weekend_water_xls,~] = xlsread(MonkeyWaterLocation,3,'','basic');   
@@ -187,9 +193,6 @@ function DVMax_checker()
                         else %if time < 21
                             monkey_last_warning(animalList(iMonkey),peopleList,'NoWater',testing,maintainer_email_address)
                             disp(['Last warning: ' animalList(iMonkey).animalName ' has not received water today.'])
-    %                     else
-    %                         monkey_emergency(animalList(iMonkey),peopleList,testing)
-    %                         disp(['Emergency: ' animalList(iMonkey).animalName ' has not received water today!'])
                         end
                     else
                         animals_who_got_water{end+1} = animalList(iMonkey).animalName;
@@ -254,9 +257,6 @@ function DVMax_checker()
                         else %if time < 21
                             monkey_last_warning(animalList(iMonkey),peopleList,'NoFood',testing,maintainer_email_address)
                             disp(['Last warning: ' animalList(iMonkey).animalName ' has not received food today.'])
-    %                     else
-    %                         monkey_emergency(animalList(iMonkey),peopleList,testing)
-    %                         disp(['Emergency: ' animalList(iMonkey).animalName ' has not received water today!'])
                         end
                     else
                         animals_who_got_food{end+1} = animalList(iMonkey).animalName;
@@ -345,58 +345,24 @@ function DVMax_checker()
     end
 end
 
-function animalList = load_animal_list(MonkeyWaterLocation)    
-    [animal_xls_num,animal_xls,~] = xlsread(MonkeyWaterLocation,1,'','basic');
-    [~,people_xls,~] = xlsread(MonkeyWaterLocation,2,'','basic');
-    for iMonkey = 2:size(animal_xls,1)
-        for iCol = 1:size(animal_xls,2)
-            if isempty(animal_xls{iMonkey,iCol})
-                eval(['animalList(iMonkey-1).' animal_xls{1,iCol} ' = ''' num2str(animal_xls_num(iMonkey-1)) ''';'])
-            else
-                eval(['animalList(iMonkey-1).' animal_xls{1,iCol} ' = ''' animal_xls{iMonkey,iCol} ''';'])
-            end
-        end
-        for iPerson = 2:size(people_xls,1)
-            if strcmpi(people_xls{iPerson,1},animalList(iMonkey-1).personInCharge)
-                for iCol = 2:size(people_xls,2)
-                    eval(['animalList(iMonkey-1).' people_xls{1,iCol} ' = ''' people_xls{iPerson,iCol} ''';'])
-                end                
-                break
-            end  
-        end
-        for iPerson = 2:size(people_xls,1)
-            if strcmpi(people_xls{iPerson,1},animalList(iMonkey-1).secondInCharge)
-                for iCol = 2:size(people_xls,2)
-                    eval(['animalList(iMonkey-1).secondary' people_xls{1,iCol} ' = ''' people_xls{iPerson,iCol} ''';'])
-                end                
-                break
-            end
-        end
-    end    
+function animalList = load_animal_list(MonkeyWaterLocation,contactData)    
+    %[animal_xls_num,animal_xls,~] = xlsread(MonkeyWaterLocation,1,'','basic');
+    animalTable=readtable(MonkeyWaterLocation,'FileType','spreadsheet','sheet','Monkeys');
+    %clear out garbage entries:
+    animalTable=animalTable(:,cellfun(@isempty,strfind(animalTable.Properties.VariableNames,'Var')));
+    primaryTable=[];
+    secondaryTable=[];
+    for i=1:size(animalTable,1)
+        primaryTable=[primaryTable;contactData(strcmp(contactData.shortName,animalTable.personInCharge(i)),:)];
+        secondaryTable=[secondaryTable;contactData(strcmp(contactData.shortName,animalTable.secondInCharge(i)),:)];
+    end
+    for i=1:numel(secondaryTable.Properties.VariableNames)
+        secondaryTable.Properties.VariableNames(i)={['secondary',secondaryTable.Properties.VariableNames{i}]};
+    end
+   
+    animalList=table2struct([animalTable,primaryTable,secondaryTable]);
 end
 
-function peopleList = load_people_list(MonkeyWaterLocation)    
-    [~,people_xls,~] = xlsread(MonkeyWaterLocation,2,'','basic');
-    for iPerson = 2:size(people_xls,1)
-        for iCol = 1:size(people_xls,2)
-            eval(['peopleList(iPerson-1).' people_xls{1,iCol} ' = ''' people_xls{iPerson,iCol} ''';'])
-        end  
-    end 
-end
-
-function ccmList = load_ccm_list(MonkeyWaterLocation)
-    [~,ccm_xls,~] = xlsread(MonkeyWaterLocation,5,'','basic');
-    for iPerson = 2:size(ccm_xls,1)
-        for iCol = 1:size(ccm_xls,2)
-            eval(['ccmList(iPerson-1).' ccm_xls{1,iCol} ' = ''' ccm_xls{iPerson,iCol} ''';'])
-        end  
-    end 
-end
-
-% function weekendList = load_weekend_list(MonkeyWaterLocation)    
-%     [~,weekend_xls,~] = xlsread(MonkeyWaterLocation,3);   
-%     weekendList = weekend_xls(2:end,2:end);
-% end
 
 function monkey_warning(animal,messageType,testing,maintainer_email_address)
     if testing
@@ -466,15 +432,15 @@ function monkey_last_warning(animal,peopleList,message,testing,maintainer_email_
         otherwise
             error('monkey_last_warning:badMessage',['did not recognize the message key:', message])
     end
-    for iP = 1:length(peopleList)
-        if strcmpi(animal.personInCharge,peopleList(iP).Name)
+    for iP = 1:size(peopleList,1)
+        if strcmpi(animal.personInCharge,peopleList.Name{iP})
             person_in_charge = iP;
             break;
         end
     end
     second_in_charge = [];
-    for iP = 1:length(peopleList)
-        if strcmpi(animal.secondInCharge,peopleList(iP).Name)
+    for iP = 1:size(peopleList,1)
+        if strcmpi(animal.secondInCharge,peopleList.Name{iP})
             second_in_charge = iP;
             break;
         end
@@ -485,18 +451,18 @@ function monkey_last_warning(animal,peopleList,message,testing,maintainer_email_
         recepients = maintainer_email_address;
         subject = ['(this is a test) Last warning: ' animal.animalName ' has not received ' message '!'];
     else
-       	recepients = {peopleList.contactEmail};       
+       	recepients = peopleList.contactEmail;       
         subject = ['Last warning: ' animal.animalName ' has not received ' message '!'];
     end    
     
     if ~isempty(second_in_charge)
         message = {[animal.animalName ' (' animal.animalID ') has not received ' message ' as of ' datestr(now) '.'],...
-            ['Person in charge: ' peopleList(person_in_charge).Name '(' peopleList(person_in_charge).contactNumber ')'],...
-            ['Second in charge: ' peopleList(second_in_charge).Name '(' peopleList(second_in_charge).contactNumber ')'],...
+            ['Person in charge: ' peopleList.Name{person_in_charge} '(' peopleList.contactNumber{person_in_charge} ')'],...
+            ['Second in charge: ' peopleList.Name{second_in_charge} '(' peopleList.contactNumber{second_in_charge} ')'],...
             'Sent from Matlab!'};
     else
         message = {[animal.animalName ' (' animal.animalID ') has not received ' message ' as of ' datestr(now) '.'],...
-            ['Person in charge: ' peopleList(person_in_charge).Name '(' peopleList(person_in_charge).contactNumber ')'],...                
+            ['Person in charge: ' peopleList.Name{person_in_charge} '(' peopleList.contactNumber{person_in_charge} ')'],...                
             'Sent from Matlab!'};
     end    
     message_sent = 0;
@@ -522,8 +488,8 @@ function monkey_final_list(animalList,peopleList,testing,maintainer_email_addres
         message = {message{:},'Sent from Matlab! This is a test.'};
         send_mail_message(recepients,subject,message)
     else
-        for iP = 1:length(peopleList)
-            recepients = {recepients{:} peopleList(iP).contactEmail};
+        for iP = 1:size(peopleList,1)
+            recepients = {recepients{:} peopleList.contactEmail{iP}};
         end
         subject = ['All monkeys received water and food'];
         message = {'The following monkeys received water and food today:'};
@@ -543,7 +509,7 @@ function monkey_final_list(animalList,peopleList,testing,maintainer_email_addres
     end    
 end
 
-function send_monkey_person_email(animalList,peopleList,ccmList,maintainer_email_address)
+function send_monkey_person_email(animalList,peopleList,testing,ccmList,maintainer_email_address)
     subject = 'NHP caretaker list update';
     message_table = {};
     for iAnimal = 1:length(animalList)
@@ -554,7 +520,11 @@ function send_monkey_person_email(animalList,peopleList,ccmList,maintainer_email
     message = [{'Hi everyone, '} {''} {'This is the current list of monkeys and their caretakers from the Miller lab. You will automatically receive '...
         'a new email whenever this list changes.'} {''} message_table {''} {['If you don''t want to receive these emails anymore please email ' maintainer_email_address '.']}...
         {''} {'Best regards,'} {'Miller Lab'}];
-    recepients = [{ccmList.contactEmail} {peopleList.contactEmail}];
+    if ~testing
+        recepients = [ccmList.contactEmail; peopleList.contactEmail];
+    else
+        recepients = maintainer_email_address;
+    end
     send_mail_message(recepients,subject,message)
 end
 
@@ -563,7 +533,7 @@ function body_weight_email(animalList,peopleList,testing,maintainer_email_addres
         recepients = maintainer_email_address;
         subject = ['(this is a test) Weekly body weights update'];
     else
-       	recepients = {peopleList.contactEmail};       
+       	recepients = peopleList.contactEmail;       
         subject = ['Weekly body weights update'];
     end    
 
