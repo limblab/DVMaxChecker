@@ -335,7 +335,7 @@ function DVMax_checker()
                 xlim([datenum('2013-01-01') datenum(date)])                             
                 legend(hp,legend_text,'Location','West')
             end
-            %print(gf,'BodyWeights','-dpng')        
+            print(gf,'BodyWeights','-dpng')        
             body_weight_email(animalList,peopleList,testing,maintainer_email_address)
         end        
 
