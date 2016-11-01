@@ -1,4 +1,4 @@
-function TB_checker()
+function TBChecker()
     %script to check whether all the people on the monkey team have current
     %TB tests. This script is expected to run daily, and will send a
     %reminder to get re-tested a month ahead of time, followed by warnings

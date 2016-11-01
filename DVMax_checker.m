@@ -1,5 +1,5 @@
 function DVMax_checker()
-    testing = 1;    
+    testing = 0;    
     %email addresses should be NU emails to comply with FSMIT security
     %policy:
     maintainer_email_address = 'tucker.tomlinson1@northwestern.edu';

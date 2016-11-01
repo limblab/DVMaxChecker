@@ -5,20 +5,6 @@ function trainingChecker()
     %documents certifying that they have been trained.
     
     testing=1;
-    %email addresses should be NU emails to comply with FSMIT security
-    %policy:
-    maintainerEmailAddress='tucker.tomlinson1@northwestern.edu';
-    labPIEmailAddress='lm@northwestern.edu';
-    labTrainingCzar='stephanienaufel2015@u.northwestern.edu';
-    
-    if testing
-        recipients=maintainerEmailAddress;
-    else
-        recipients={labPIEmailAddress,...
-                    maintainerEmailAddress,...
-                    labTrainingCzar};
-    end
-    
     
     try%try/catch to email maintainer if error occurs
         if ispc
@@ -32,17 +18,28 @@ function trainingChecker()
         else
             error('TB_checker:systemNotRecognized','This script only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
         end
-
         %get monkey staff data:
+        adminContacts=readtable(fname,'FileType','spreadsheet','sheet','admin');
         xlsData=readtable(fname,'FileType','spreadsheet','sheet','monkeyTeam');
+        %set contacts for the checker
+        if testing
+            recipients=adminContacts.maintainer;
+        else
+            recipients={adminContacts.PI,...
+                        adminContacts.maintainer,...
+                        adminContacts.trainingCzar};
+        end
         %loop through staff checking whether there is an entry for the
         %training:
         for personIdx=1:size(xlsData,1)
             disp(['working on: ',xlsData.shortName{personIdx}])
-            if isnan(xlsData.TrainingDocumentedDate(1))
-                disp('tucker has no training date!')
+            if isnan(xlsData.TrainingDocumentedDate(personIdx))
+                disp([xlsData.shortName{personIdx} ' has no training date!'])
                 %we need to issue a warning
                 subject=['REMINDER: ',xlsData.shortName{personIdx},' has no training record'];
+                if testing
+                    subject=['(testing) ',subject];
+                end
                 message={['there is no training record date entered for: ',xlsData.fullName{personIdx}],...
                         ['Please contact ',xlsData.shortName{personIdx},' and the lab training czar to update the training record']...
                         ' ',...
@@ -50,12 +47,12 @@ function trainingChecker()
                         fname,...
                         'This system will send repeat warnings every 7 days until the file is updated with a completion date',...
                         ' ',...
-                        ['For tech support on this checker, contact: ',maintainerEmailAddress]};
+                        ['For tech support on this checker, contact: ',adminContacts.maintainer{1}]};
                 send_mail_message(recipients,subject,message)
             end
         end
         
     catch ME
-        sendCrashEmail(maintainerEmailAddress,ME,'training checker')
+        sendCrashEmail(adminContacts.maintainer,ME,'training checker')
     end
 end
