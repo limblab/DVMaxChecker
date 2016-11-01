@@ -1,6 +1,8 @@
 function DVMax_checker()
-    testing = 0;    
-    maintainer_email_address = 'tuckertomlinson@gmail.com';
+    testing = 1;    
+    %email addresses should be NU emails to comply with FSMIT security
+    %policy:
+    maintainer_email_address = 'tucker.tomlinson1@northwestern.edu';
     
     try
         % Add JDBC driver to path
@@ -34,7 +36,7 @@ function DVMax_checker()
                 contactListLocation='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/contacts.xls';
             end
         else
-            error('DVMax_checker:systemNotRecognized','This script only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
+            error('DVMax_checker:systemNotRecognized','This script is only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
         end
         water_codes = {'EP8500','EP9000','EP2000','AC1091'};
         free_water_codes = {'EP9200 ','AC1093'};
@@ -322,10 +324,10 @@ function DVMax_checker()
                     color_idx = color_idx+1;
                     if ~isempty(animalList(iMonkey).body_weight_date)
                         hp(end+1) = plot(animalList(iMonkey).body_weight_date,animalList(iMonkey).body_weight,'Color',colors(color_idx,:),'LineWidth',2);   
-                        if str2double(animalList(iMonkey).idealBodyWeight)
-                            plot(animalList(iMonkey).body_weight_date([1 end]),[str2double(animalList(iMonkey).idealBodyWeight) str2double(animalList(iMonkey).idealBodyWeight)],'LineStyle','--','Color',colors(color_idx,:));
+                        if ~isnan(animalList(iMonkey).idealBodyWeight)
+                            plot(animalList(iMonkey).body_weight_date([1 end]),[animalList(iMonkey).idealBodyWeight animalList(iMonkey).idealBodyWeight],'LineStyle','--','Color',colors(color_idx,:));
                         end
-                        legend_text{end+1} = [animalList(iMonkey).animalName ' ' num2str(round(100*(animalList(iMonkey).body_weight(1)/str2double(animalList(iMonkey).idealBodyWeight) - 1))) '%. (' animalList(iMonkey).days_since_last_weighing ')'];
+                        legend_text{end+1} = [animalList(iMonkey).animalName ' ' num2str(round(100*(animalList(iMonkey).body_weight(1)/animalList(iMonkey).idealBodyWeight - 1))) '%. (' animalList(iMonkey).days_since_last_weighing ')'];
                     end
                 end        
                 set(gca,'XTick',[datenum('2013-01-01'):182:datenum(date)])
@@ -341,7 +343,7 @@ function DVMax_checker()
         close(conn)
         pause(10)
     catch ME
-        dvmax_crash_email(maintainer_email_address,ME)
+        sendCrashEmail(maintainer_email_address,ME,'DVMax checker')
     end
 end
 
@@ -433,14 +435,14 @@ function monkey_last_warning(animal,peopleList,message,testing,maintainer_email_
             error('monkey_last_warning:badMessage',['did not recognize the message key:', message])
     end
     for iP = 1:size(peopleList,1)
-        if strcmpi(animal.personInCharge,peopleList.Name{iP})
+        if strcmpi(animal.personInCharge,peopleList.shortName{iP})
             person_in_charge = iP;
             break;
         end
     end
     second_in_charge = [];
     for iP = 1:size(peopleList,1)
-        if strcmpi(animal.secondInCharge,peopleList.Name{iP})
+        if strcmpi(animal.secondInCharge,peopleList.shortName{iP})
             second_in_charge = iP;
             break;
         end
@@ -457,12 +459,12 @@ function monkey_last_warning(animal,peopleList,message,testing,maintainer_email_
     
     if ~isempty(second_in_charge)
         message = {[animal.animalName ' (' animal.animalID ') has not received ' message ' as of ' datestr(now) '.'],...
-            ['Person in charge: ' peopleList.Name{person_in_charge} '(' peopleList.contactNumber{person_in_charge} ')'],...
-            ['Second in charge: ' peopleList.Name{second_in_charge} '(' peopleList.contactNumber{second_in_charge} ')'],...
+            ['Person in charge: ' peopleList.fullName{person_in_charge} '(' peopleList.contactNumber{person_in_charge} ')'],...
+            ['Second in charge: ' peopleList.fullName{second_in_charge} '(' peopleList.contactNumber{second_in_charge} ')'],...
             'Sent from Matlab!'};
     else
         message = {[animal.animalName ' (' animal.animalID ') has not received ' message ' as of ' datestr(now) '.'],...
-            ['Person in charge: ' peopleList.Name{person_in_charge} '(' peopleList.contactNumber{person_in_charge} ')'],...                
+            ['Person in charge: ' peopleList.fullName{person_in_charge} '(' peopleList.contactNumber{person_in_charge} ')'],...                
             'Sent from Matlab!'};
     end    
     message_sent = 0;
@@ -587,12 +589,3 @@ function monkey_weight_warning(animal,lastWeighing,testing,maintainer_email_addr
     end           
 end
 
-function dvmax_crash_email(maintainer_email_address,ME)
-    recepients = maintainer_email_address;    
-    subject = 'DVMax checker crashed.';
-    message = {ME.identifier;ME.message};
-    for i=1:numel(ME.stack)
-        message=[message;{ME.stack(i).file;['line: ' num2str(ME.stack(i).line)]}]; 
-    end
-    send_mail_message(recepients,subject,message)    
-end
