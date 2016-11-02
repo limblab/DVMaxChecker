@@ -55,9 +55,10 @@ function animalList=DvMax_audit(varargin)
     
     
     %% connect to database and load monkey list
-    conn = database('OR','dvmax_lmiller','dvmax','Vendor','Oracle',...
-        'DriverType','thin','Server','risdatsvr3.itcs.northwestern.edu','PortNumber',1521);    
-
+%     conn = database('OR','dvmax_lmiller','dvmax','Vendor','Oracle',...
+%         'DriverType','thin','Server','risdatsvr3.itcs.northwestern.edu','PortNumber',1521);    
+    conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
+        
     animalList = load_animal_list(MonkeyWaterLocation);
     save('animalList','animalList')
 %     load('audit_animalList.mat')
