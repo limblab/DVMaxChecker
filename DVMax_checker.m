@@ -48,28 +48,42 @@ function DVMax_checker()
         time = time(4);
 
         conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
+        
+        keepList={'cageID','personInCharge','secondInCharge'};%cells to keep when comparing prior caretaker data to call send_monkey_person_email
         try
             load('animalList')
-            oldAnimalList = animalList;
-            oldAnimalList2 = rmfield(oldAnimalList,'idealBodyWeight');
-            oldAnimalList2 = rmfield(oldAnimalList2,'contactNumber');
-            oldAnimalList2 = rmfield(oldAnimalList2,'secondarycontactNumber');
-            oldAnimalList2 = rmfield(oldAnimalList2,'dateOfWeightUpdate');
-            oldAnimalList2 = rmfield(oldAnimalList2,'TBDate');
-            oldAnimalList2 = rmfield(oldAnimalList2,'secondaryTBDate');
-            
+%             oldAnimalList = animalList;
+%             oldAnimalList2 = rmfield(oldAnimalList,'idealBodyWeight');
+%             oldAnimalList2 = rmfield(oldAnimalList2,'contactNumber');
+%             oldAnimalList2 = rmfield(oldAnimalList2,'secondarycontactNumber');
+%             oldAnimalList2 = rmfield(oldAnimalList2,'dateOfWeightUpdate');
+%             oldAnimalList2 = rmfield(oldAnimalList2,'TBDate');
+%             oldAnimalList2 = rmfield(oldAnimalList2,'secondaryTBDate');
+            oldAnimalList2=animalList;
+            fields=fieldnames(oldAnimalList2(1));           
+            for i=1:numel(fields)
+                if isempty(cell2mat(strfind(keepList,fields{i})))
+                    oldAnimalList2=rmfield(oldAnimalList2,fields{i});
+                end
+            end
         end
 
         peopleList = readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam');
         animalList = load_animal_list(MonkeyWaterLocation,peopleList);
         save('animalList','animalList')    
-        animalList2 = rmfield(animalList,'idealBodyWeight');
-        animalList2 = rmfield(animalList2,'contactNumber');
-        animalList2 = rmfield(animalList2,'secondarycontactNumber');
-        animalList2 = rmfield(animalList2,'dateOfWeightUpdate');
-        animalList2 = rmfield(animalList2,'TBDate');
-        animalList2 = rmfield(animalList2,'secondaryTBDate');
-
+%         animalList2 = rmfield(animalList,'idealBodyWeight');
+%         animalList2 = rmfield(animalList2,'contactNumber');
+%         animalList2 = rmfield(animalList2,'secondarycontactNumber');
+%         animalList2 = rmfield(animalList2,'dateOfWeightUpdate');
+%         animalList2 = rmfield(animalList2,'TBDate');
+%         animalList2 = rmfield(animalList2,'secondaryTBDate');
+        animalList2=animalList;
+        fields=fieldnames(animalList2(1));
+        for i=1:numel(fields)
+            if isempty(cell2mat(strfind(keepList,fields{i})))
+                animalList2=rmfield(animalList2,fields{i});
+            end
+        end
         ccmList = readtable(contactListLocation,'FileType','spreadsheet','sheet','CCM'); 
 
         if ~isequal(animalList2,oldAnimalList2)

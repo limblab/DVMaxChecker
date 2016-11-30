@@ -4,7 +4,7 @@ function trainingChecker()
     %to Lee and the script maintainer so they can prod people to update the
     %documents certifying that they have been trained.
     
-    testing=1;
+    testing=0;
     
     try%try/catch to email maintainer if error occurs
         if ispc

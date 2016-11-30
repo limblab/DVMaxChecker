@@ -18,7 +18,7 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=1;
+    testing=0;
 
     try
         %get the filenames for the current host system:
@@ -39,6 +39,7 @@ function taskChecker()
             javaaddpath('xlwrite/poi_library/xmlbeans-2.3.0.jar');
             javaaddpath('xlwrite/poi_library/dom4j-1.6.1.jar');
             javaaddpath('xlwrite/poi_library/stax-api-1.0.1.jar');
+            addpath([pwd,filesep,'xlwrite'])
         else
             error('TB_checker:systemNotRecognized','This script only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
         end
@@ -250,7 +251,9 @@ function taskChecker()
     catch ME
         sendCrashEmail(adminContacts.maintainer,ME,'task checker')
     end
-        
     
+    if isunix
+        rmpath([pwd,filesep,'xlwrite'])
+    end
     
 end
