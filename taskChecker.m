@@ -110,7 +110,12 @@ function taskChecker()
                     earliestTime=10;
                     leadTime=7;
                     tmp=dueDay;
-                    tmp(2)=mod(tmp(2)+1,12);
+                    if tmp(2)==12
+                        tmp(2)=1;
+                        tmp(1)=tmp(1)+1;
+                    else
+                        tmp(2)=tmp(2)+1;
+                    end
                     offset=datenum(tmp)-datenum(dueDay);
                 case 'yearly'
                     earliestTime=60;
@@ -158,11 +163,11 @@ function taskChecker()
                         taskSheet.personCompleting{i}=nan;
                         updatedJobsSheet=true;
                 elseif today<dueDayNum%its not the completion date, check for early completions:
-                    if today<(dueDayNum-earliestTime)
+                    if completionDate<(dueDayNum-earliestTime)
                         %remove the entry and email a warning
                         subject=['task checker:',taskSheet.Task{i},': early task completion'];
                         message=[{'Tasks should be completed at regular intervals',...
-                                    'completing a task too early can effectively generate a gap in completions',...
+                                    'completing a task too early results in a gap between completions',...
                                     ['the ',taskSheet.Task{i},' task was completed: ',num2str(dueDayNum-today),' days early'],...
                                     'If you want to reset the interval of checking you should alter the dueDay and due day in the JobChecker.xls file',...
                                     ['so that today falls within ',num2str(earliestTime),' of the due date']},...

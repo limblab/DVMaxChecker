@@ -293,14 +293,20 @@ function DVMax_checker()
 
         % Monkey weight warning
         if check_weight 
-            lastWeighing = (animalList(iMonkey).body_weight_date(1));
-            if time < 18
-                if datenum(date) - lastWeighing > 6 
-                    disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
-                    monkey_last_warning(animalList(iMonkey),peopleList,'NoWeight',testing,maintainer_email_address);
-                elseif datenum(date) - lastWeighing > 4 
-                    disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
-                    monkey_weight_warning(animalList(iMonkey),lastWeighing,testing,maintainer_email_address);
+            if isempty(animalList(iMonkey).body_weight_date)
+                disp(['Warning: ',animalList(iMonkey).animalName ' has never been weighed!'])
+                monkey_last_warning(animalList(iMonkey),peopleList,'NoWeight',testing,maintainer_email_address);
+                lastWeighing=nan;
+            else
+                lastWeighing = (animalList(iMonkey).body_weight_date(1));
+                if time < 18
+                    if datenum(date) - lastWeighing > 6 
+                        disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
+                        monkey_last_warning(animalList(iMonkey),peopleList,'NoWeight',testing,maintainer_email_address);
+                    elseif datenum(date) - lastWeighing > 4 
+                        disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
+                        monkey_weight_warning(animalList(iMonkey),lastWeighing,testing,maintainer_email_address);
+                    end
                 end
             end
         end        
