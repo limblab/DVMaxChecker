@@ -213,21 +213,29 @@ function taskChecker()
                 message=[{['this is an automated warning that the recurring task: ',taskSheet.Task{i}],...
                             'is due today, and has not been completed.',...
                             'Please complete this task before the end of the day'},...
+                            {'person responsible:'},...
+                            taskSheet.responsiblePerson(i),...
+                            {'secondary person:'},...
+                            taskSheet.backupPerson(i),...
                             boilerplate];
                         if testing
                             send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                         else
-                            send_mail_message([adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
+                            send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
                         end
             elseif today>dueDayNum%if the task is overdue
                 subject=['TASK OVERDUE!!!: ', taskSheet.Task{i},' was due on: ',datestr(dueDayNum)];
                 message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
                             'is overdue. Please complete this task ASAP'},...
+                            {'person responsible:'},...
+                            taskSheet.responsiblePerson(i),...
+                            {'secondary person:'},...
+                            taskSheet.backupPerson(i),...
                             boilerplate];
                 if testing
                     send_mail_message(adminContacts.maintainer{1},subject,message,[]);
                 else
-                    send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
                 end
             elseif today==dueDayNum-leadTime%check to see if we need to issue a reminder
                 subject=['REMINDER: ', taskSheet.Task{i},' is due in: ',num2str(leadTime),'days'];
@@ -238,7 +246,7 @@ function taskChecker()
                 if testing
                     send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                 else
-                    send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
                 end
             end
             
@@ -254,7 +262,7 @@ function taskChecker()
         end
         
     catch ME
-        sendCrashEmail(adminContacts.maintainer,ME,'task checker')
+        sendCrashEmail([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer],ME,'task checker')
     end
     
     if isunix

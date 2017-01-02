@@ -19,7 +19,7 @@ function DVMaxFoodChecker()
             data=fetchMonkeyRecord(conn,cagecardID);
 
             if todayIsAHoliday
-                ccmInChargeFood = weekendFoodList{find(strcmpi(weekendFoodList(:,1),['CC' cagecardID])),today_is_a_holiday};
+                ccmInChargeFood = weekendFoodList{find(strcmpi(weekendFoodList(:,1),['CC' cagecardID])),todayIsAHoliday};
                 ccmInChargeFood = strcmpi(ccmInChargeFood,'ccm');
             else
                 ccmInChargeFood = 0;
