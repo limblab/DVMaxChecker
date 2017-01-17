@@ -221,7 +221,8 @@ function taskChecker()
                         if testing
                             send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                         else
-                            send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
+%                             send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
+                            send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
                         end
             elseif today>dueDayNum%if the task is overdue
                 subject=['TASK OVERDUE!!!: ', taskSheet.Task{i},' was due on: ',datestr(dueDayNum)];

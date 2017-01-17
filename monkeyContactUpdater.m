@@ -31,14 +31,14 @@ function monkeyContactUpdater()
 
         if ~isequal(animalList2,oldAnimalList2)
             subject = 'NHP caretaker list update';
-            message_table = {};
+            messageTable = {};
             for iAnimal = 1:length(animalList)
                 temp = length([animalList(iAnimal).animalID ' - ' animalList(iAnimal).animalName ':']);
-                message_table{iAnimal} = [animalList(iAnimal).animalID ' - ' animalList(iAnimal).animalName ':' repmat(' ',1,25-temp) animalList(iAnimal).personInCharge...
+                messageTable{iAnimal} = [animalList(iAnimal).animalID ' - ' animalList(iAnimal).animalName ':' repmat(' ',1,25-temp) animalList(iAnimal).personInCharge...
                     ' (' animalList(iAnimal).contactEmail '), ' animalList(iAnimal).secondInCharge ' (' animalList(iAnimal).secondarycontactEmail ')'];   
             end
             message = [{'Hi everyone, '} {''} {'This is the current list of monkeys and their caretakers from the Miller lab. You will automatically receive '...
-                'a new email whenever this list changes.'} {''} message_table {''} {['If you don''t want to receive these emails anymore please email ' maintainer_email_address '.']}...
+                'a new email whenever this list changes.'} {''} messageTable {''} {['If you don''t want to receive these emails anymore please email ' maintainerEmailAddress '.']}...
                 {''} {'Best regards,'} {'Miller Lab'}];
             if ~testing
                 recepients = [ccmList.contactEmail; peopleList.contactEmail];

@@ -46,8 +46,10 @@ function DVMax_checker()
         food_restriction_start_code = 'EP9300';
         time = clock;
         time = time(4);
-
-        conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
+        %production server:
+         conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
+        %testing server:
+%        conn = database('ORTEST','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdattst.ci.northwestern.edu','PortNumber',1521);
         
         keepList={'cageID','personInCharge','secondInCharge'};%cells to keep when comparing prior caretaker data to call send_monkey_person_email
         try
