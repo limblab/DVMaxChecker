@@ -221,7 +221,6 @@ function taskChecker()
                         if testing
                             send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                         else
-%                             send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
                             send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
                         end
             elseif today>dueDayNum%if the task is overdue
@@ -236,7 +235,7 @@ function taskChecker()
                 if testing
                     send_mail_message(adminContacts.maintainer{1},subject,message,[]);
                 else
-                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer(1),adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
+                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
                 end
             elseif today==dueDayNum-leadTime%check to see if we need to issue a reminder
                 subject=['REMINDER: ', taskSheet.Task{i},' is due in: ',num2str(leadTime),'days'];
