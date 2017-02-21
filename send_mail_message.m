@@ -49,7 +49,6 @@ setpref('Internet','SMTP_Server','smtp.northwestern.edu');
 setpref('Internet','SMTP_Username',u);
 setpref('Internet','SMTP_Password',p);
 
-% Gmail server.
 props = java.lang.System.getProperties;
 props.setProperty('mail.smtp.auth','true');
 props.setProperty('mail.smtp.socketFactory.class', 'javax.net.ssl.SSLSocketFactory');

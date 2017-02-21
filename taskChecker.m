@@ -18,20 +18,25 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=0;
+    testing=1;
 
     try
         %get the filenames for the current host system:
+        [~,contactsFile]=getMonkeyDataLocation();
         if ispc
-            taskFile='\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xls';
-            contactsFile = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\General-Lab-Stuff\checkerData\contacts.xls';
-        elseif isunix 
+            taskFile='\\fsmresfiles\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xls';
+        elseif isunix
             [~,hostname]=unix('hostname');
             if strcmp(strtrim(hostname),'tucker-pc')
-                %mount point for fsmresfiles on tucker's computer:
                 taskFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/JobChecker.xls';
-                contactsFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/contacts.xls';
+            elseif strcmp(strtrim(hostname),'Rhea')
+                taskFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/JobChecker.xls';
+            else
+                error('taskChecker:unrecognizedSystem',['Did not recognize the system: ', hostname,' and do not know where to find the taskFile path'])
             end
+        end
+        %if we are on a unix system, get the xlwrite drivers into the path
+        if  isunix 
             %get the java xls write utility files loaded into the matlab path:
             javaaddpath('xlwrite/poi_library/poi-3.8-20120326.jar');
             javaaddpath('xlwrite/poi_library/poi-ooxml-3.8-20120326.jar');
@@ -40,8 +45,6 @@ function taskChecker()
             javaaddpath('xlwrite/poi_library/dom4j-1.6.1.jar');
             javaaddpath('xlwrite/poi_library/stax-api-1.0.1.jar');
             addpath([pwd,filesep,'xlwrite'])
-        else
-            error('TB_checker:systemNotRecognized','This script only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
         end
         
         %load up our contact info:
@@ -49,6 +52,10 @@ function taskChecker()
         taskContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','monkeyTeam');
         %load up our task data:
         taskSheet=readtable(taskFile,'FileType','spreadsheet','sheet','Jobs');
+        %check taskSheet dates for wonky formatting and convert them to
+        %datenums if necessary:
+        taskSheet.dateDue=datenum(datetime(taskSheet.dateDue,'ConvertFrom','excel'));
+        taskSheet.dateCompleted=datenum(datetime(taskSheet.dateCompleted,'ConvertFrom','excel'));
         %set up boilerplate for emails:
         boilerplate={' ',...
             'this message was generated automatically by the taskChecker script',...
@@ -87,10 +94,12 @@ function taskChecker()
             % get the interval for this task and set the minimum completion
             % time, the warning lead-time, and the offset for updating to
             % a new due-date
-            if abs(taskSheet.dateDue(i)-today)>1000
+            if abs(datenum(taskSheet.dateDue(i))-today)>1000
                 %if we have a HUGE difference, we are probably working with
                 %excel datenums rather than matlab datenums
-                dueDayNum=datenum(datetime(taskSheet.dateDue(i),'ConvertFrom','excel'));
+                dueDayNum=datenum(datetime(datenum(taskSheet.dateDue(i)),'ConvertFrom','excel'));
+            else
+                dueDayNum=datenum(taskSheet.dateDue(i));
             end
             dueDay=datevec(dueDayNum);
             switch taskSheet.frequency{i}
@@ -139,14 +148,15 @@ function taskChecker()
             
            %now see if we have anything to do today:
             if ~isnan(taskSheet.dateCompleted(i))%we have a date entered for this task
-                completionDate=taskSheet.dateCompleted(i);
-                if abs(taskSheet.dateCompleted(i)-today)>1000
+                if abs(datenum(taskSheet.dateCompleted(i))-today)>1000
                     %if we have a HUGE difference, we are probably working with
                     %excel datenums rather than matlab datenums
-                    completionDate=datenum(datetime(completionDate,'ConvertFrom','excel'));
+                    completionDate=datenum(datetime(datenum(taskSheet.dateCompleted(i)),'ConvertFrom','excel'));
+                else
+                    completionDate=taskSheet.dateCompleted(i);
                 end
                 % check that the entered date is before today:
-                if today<completionDate;
+                if today<completionDate
                         %remove the entry and email a warning
                         subject=['task checker: bad completion date!',taskSheet.Task{i},'has a future date'];
                         message=[{['there is an entry for ',taskSheet.Task(i),' showing the task was completed on: ',num2str( completionDate)],...
@@ -203,7 +213,6 @@ function taskChecker()
                     taskSheet.personCompleting{i}=nan;
                     %update the due date:
                     taskSheet.dateDue(i)=m2xdate(dueDayNum+offset);
-                    
                     updatedJobsSheet=true;
                     
                 end
@@ -254,6 +263,10 @@ function taskChecker()
         
         if updatedJobsSheet
             %write updated jobs to excel file (just overwrite the whole tab):
+            taskSheet.dateDue=m2xdate(taskSheet.dateDue);
+            %the following line was necessary in matlab 2015a, but is not
+            %necessary in 2016a
+            %taskSheet.dateCompleted=m2xdate(taskSheet.dateCompleted);
             if isunix
                 xlwrite(taskFile,table2cell(taskSheet),'Jobs','A2');%RANGE=A2 starts writing the table at cell A2 and fills as needed
             else

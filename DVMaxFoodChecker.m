@@ -1,7 +1,8 @@
 function DVMaxFoodChecker()
 
-    testing=1;
-    maintainerEmailAddress= 'tucker.tomlinson1@northwestern.edu';
+    testing=0;
+    [~,contactListLocation]=getMonkeyDataLocation();
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
     try
         [peopleList,animalList,todayIsAHoliday,~,weekendFoodList]=getMonkeyInfo();
         food_codes = {'EP8600','EP8700'};
@@ -43,16 +44,88 @@ function DVMaxFoodChecker()
                     if ~isempty(lastFoodEntry)
                         lastFoodEntry = min(lastFoodEntry);
                     else
-                        lastFoodEntry = 1000000;
+                        lastFoodEntry = [];
                     end  
-
-                    lastFoodEntryDate = data{lastFoodEntry,2};
-                    if floor(datenum(lastFoodEntryDate)) ~= datenum(date)                    
+                    if ~isempty(lastFoodEntry)
+                        lastFoodEntry = min(lastFoodEntry);
+                    else
+                        lastFoodEntry = [];
+                    end
+                    if ~isempty(lastFoodEntry)
+                        lastFoodEntryDate = data{lastFoodEntry,2};
+                        flag=floor(datenum(lastWaterEntryDate)) ~= datenum(date);
+                    else
+                        flag=true;
+                    end
+                    if flag               
                         if time < 18
-                            monkey_warning(animalList(iMonkey),'NoFood',testing,maintainerEmailAddress)
+                            if testing
+                                recipients = adminContacts.maintainer(1);
+                                subject = '(this is a test) Your monkey has not received food';
+                            else
+                                recipients = animalList(iMonkey).contactEmail;
+                                if ~isempty(animalList(iMonkey).secondInCharge)
+                                    recipients = {recipients,animalList(iMonkey).secondarycontactEmail};
+                                end
+                                subject = 'Your monkey has not received food';
+                            end
+                            
+                            message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not received food as of ' datestr(now) '.'],...
+                                'Sent from Matlab!'};
+                            message_sent = 0;
+                            while (~message_sent)
+                                try
+                                    send_mail_message(recipients,subject,message)                
+                                    message_sent = 1;  
+                                catch
+                                    message_sent
+                                    pause(5)
+                                end
+                            end
                             disp(['Warning: ' animalList(iMonkey).animalName ' has not received food today.'])
-                        else %if time < 21
-                            monkey_last_warning(animalList(iMonkey),peopleList,'NoFood',testing,maintainerEmailAddress)
+                       else %if time < 21
+
+                            for iP = 1:size(peopleList,1)
+                                if strcmpi(animalList(iMonkey).personInCharge,peopleList.shortName{iP})
+                                    personInCharge = iP;
+                                    break;
+                                end
+                            end
+                            secondInCharge = [];
+                            for iP = 1:size(peopleList,1)
+                                if strcmpi(animalList(iMonkey).secondInCharge,peopleList.shortName{iP})
+                                    secondInCharge = iP;
+                                    break;
+                                end
+                            end
+
+                            if testing
+                                recipients = adminContacts.maintainer(1);
+                                subject = ['(this is a test) Last warning: ' animalList(iMonkey).animalName ' has not received  food!'];
+                            else
+                                recipients = peopleList.contactEmail;       
+                                subject = ['Last warning: ' animalList(iMonkey).animalName ' has not received water!'];
+                            end    
+
+                            if ~isempty(secondInCharge)
+                                message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not received food as of ' datestr(now) '.'],...
+                                    ['Person in charge: ' peopleList.fullName{personInCharge} '(' peopleList.contactNumber{personInCharge} ')'],...
+                                    ['Second in charge: ' peopleList.fullName{secondInCharge} '(' peopleList.contactNumber{secondInCharge} ')'],...
+                                    'Sent from Matlab!'};
+                            else
+                                message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not received food as of ' datestr(now) '.'],...
+                                    ['Person in charge: ' peopleList.fullName{personInCharge} '(' peopleList.contactNumber{personInCharge} ')'],...                
+                                    'Sent from Matlab!'};
+                            end    
+                            message_sent = 0;
+                            while (~message_sent)
+                                try
+                                    send_mail_message(recipients,subject,message)
+                                    message_sent = 1;            
+                                catch
+                                    pause(5)
+                                end
+                            end
                             disp(['Last warning: ' animalList(iMonkey).animalName ' has not received food today.'])
                         end
                     else
@@ -68,10 +141,10 @@ function DVMaxFoodChecker()
             end   
         end
         
-        if time >= 18 %&& time < 23
+        if time >= 18 && numel(animalList)==numel(animalsWhoGotFood)
             recipients = {};
             if testing
-                recipients = maintainerEmailAddress;
+                recipients = adminContacts.maintainer(1);
                 subject = ['(this is a test) All monkeys received food'];
                 message = {'The following monkeys received food today:'};
                 for iMonkey = 1:length(animalList)
@@ -105,7 +178,7 @@ function DVMaxFoodChecker()
         close(conn)
         pause(10)
     catch ME
-        sendCrashEmail(maintainerEmailAddress,ME,'DVMaxFoodChecker')
+        sendCrashEmail(adminContacts.maintainer(1),ME,'DVMaxFoodChecker')
     end
 
 end

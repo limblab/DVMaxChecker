@@ -7,20 +7,13 @@ function trainingChecker()
     testing=0;
     
     try%try/catch to email maintainer if error occurs
-        if ispc
-            fname = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\General-Lab-Stuff\checkerData\contacts.xls';
-        elseif isunix 
-            [~,hostname]=unix('hostname');
-            if strcmp(strtrim(hostname),'tucker-pc')
-                %mount point for fsmresfiles on tucker's computer:
-                fname='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/contacts.xls';
-            end
-        else
-            error('TB_checker:systemNotRecognized','This script only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')
-        end
+        
+        [~,contactsFile]=getMonkeyDataLocation();
         %get monkey staff data:
-        adminContacts=readtable(fname,'FileType','spreadsheet','sheet','admin');
-        xlsData=readtable(fname,'FileType','spreadsheet','sheet','monkeyTeam');
+        adminContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','admin');
+        xlsData=readtable(contactsFile,'FileType','spreadsheet','sheet','monkeyTeam');
+        %convert datetimes into datenums if needed:
+        xlsData.TrainingDocumentedDate=datenum(datetime(xlsData.TrainingDocumentedDate,'ConvertFrom','excel'));
         %set contacts for the checker
         if testing
             recipients=adminContacts.maintainer;
@@ -44,7 +37,7 @@ function trainingChecker()
                         ['Please contact ',xlsData.shortName{personIdx},' and the lab training czar to update the training record']...
                         ' ',...
                         'This message is automatically generated from the information in:',...
-                        fname,...
+                        contactsFile,...
                         'This system will send repeat warnings every 7 days until the file is updated with a completion date',...
                         ' ',...
                         ['For tech support on this checker, contact: ',adminContacts.maintainer{1}]};

@@ -11,6 +11,10 @@ function [MonkeyWaterLocation,contactListLocation]=getMonkeyDataLocation()
                 %mount point for fsmresfiles on tucker's computer:
                 MonkeyWaterLocation='/media/fsmresfiles/limblab/lab_folder/Lab-Wide Animal Info/WeekendWatering/MonkeyWaterData.xlsx';
                 contactListLocation='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/contacts.xls';
+            elseif strcmp(strtrim(hostname),'Rhea')
+                %mount point for fsmresfiles on tucker's account on Rhea:
+                MonkeyWaterLocation='/media/fsmresfiles/limblab/lab_folder/Lab-Wide Animal Info/WeekendWatering/MonkeyWaterData.xlsx';
+                contactListLocation='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/contacts.xls';
             end
         else
             error('getMonkeyDataLocation:systemNotRecognized','This script is only configured to run on PC workstations or Tuckers linux computer if you are using a mac or other linux pc you will need to modify the script')

@@ -1,7 +1,8 @@
 function DVMaxWaterChecker()
     
-    testing=1;
-    maintainerEmailAddress= 'tucker.tomlinson1@northwestern.edu';
+    testing=0;
+    [~,contactListLocation]=getMonkeyDataLocation();
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
     try
         [peopleList,animalList,todayIsAHoliday,weekendWaterList,~]=getMonkeyInfo();
         waterCodes = {'EP8500','EP9000','EP2000','AC1091'};
@@ -55,18 +56,18 @@ function DVMaxWaterChecker()
                     if flag                    
                         if time < 18
                             if testing
-                                recipients = maintainerEmailAddress;
+                                recipients = adminContacts.maintainer(1);
                                 subject = '(this is a test) Your monkey has not received water';
                             else
-                                recipients{1} = animalList(iMonkey).contactEmail;
+                                recipients = animalList(iMonkey).contactEmail;
                                 if ~isempty(animalList(iMonkey).secondInCharge)
-                                    recipients = {recipients{:},animalList(iMonkey).secondarycontactEmail};
+                                    recipients = {recipients,animalList(iMonkey).secondarycontactEmail};
                                 end
                                 subject = 'Your monkey has not received water';
                             end
                             
                             message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not received water as of ' datestr(now) '.'],...
-                                'Sent from Matlab! This is a test.'};
+                                'Sent from Matlab!'};
                             message_sent = 0;
                             while (~message_sent)
                                 try
@@ -95,7 +96,7 @@ function DVMaxWaterChecker()
                             end
 
                             if testing
-                                recipients = maintainerEmailAddress;
+                                recipients = adminContacts.maintainer(1);
                                 subject = ['(this is a test) Last warning: ' animalList(iMonkey).animalName ' has not received  water!'];
                             else
                                 recipients = peopleList.contactEmail;       
@@ -141,11 +142,11 @@ function DVMaxWaterChecker()
             if length(animalsWhoGotWater)==length(animalList) 
                 recipients = {};
                 if testing
-                    recipients = maintainerEmailAddress;
+                    recipients = adminContacts.maintainer(1);
                     subject = ['(this is a test) All monkeys received water'];
                     message = {'The following monkeys received water today:'};
                     for iMonkey = 1:length(animalList)
-                        message = {message{:},[animalList(iMonkey).animalName ' -      water: ' animalList(iMonkey).bottled_by '    food: ' animalList(iMonkey).fed_by]};
+                        message = {message{:},[animalList(iMonkey).animalName ' -      water: ' animalList(iMonkey).bottled_by ]};
                     end 
                     message = {message{:},'Sent from Matlab! This is a test.'};
                     send_mail_message(recipients,subject,message)
@@ -175,7 +176,7 @@ function DVMaxWaterChecker()
         close(conn)
         pause(10)
     catch ME
-        sendCrashEmail(maintainerEmailAddress,ME,'DVMaxWaterChecker')
+        sendCrashEmail(adminContacts.maintainer(1),ME,'DVMaxWaterChecker')
     end
 
 end

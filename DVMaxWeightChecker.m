@@ -1,7 +1,8 @@
 function DVMaxWeightChecker()
 
-    testing=1;
-    maintainerEmailAddress= 'tucker.tomlinson1@northwestern.edu';
+    testing=0;
+    [~,contactListLocation]=getMonkeyDataLocation();
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
     try
         [peopleList,animalList,~,~,~]=getMonkeyInfo();
         time = clock;
@@ -42,26 +43,29 @@ function DVMaxWeightChecker()
                         end
                     end
                 end
-
+                %get our contact people:
+                for iP = 1:size(peopleList,1)
+                    if strcmpi(animalList(iMonkey).personInCharge,peopleList.shortName{iP})
+                        personInCharge = iP;
+                        break;
+                    end
+                end
+                secondInCharge = [];
+                for iP = 1:size(peopleList,1)
+                    if strcmpi(animalList(iMonkey).secondInCharge,peopleList.shortName{iP})
+                        secondInCharge = iP;
+                        break;
+                    end
+                end
             % Monkey weight warning
-                if isempty(animalList(iMonkey).bodyWeightDate)
+                if isempty(animalList(iMonkey).bodyWeightDate(1))
                     disp(['Warning: ',animalList(iMonkey).animalName ' has never been weighed!'])
-                    for iP = 1:size(peopleList,1)
-                        if strcmpi(animalList(iMonkey).personInCharge,peopleList.shortName{iP})
-                            personInCharge = iP;
-                            break;
-                        end
-                    end
-                    secondInCharge = [];
-                    for iP = 1:size(peopleList,1)
-                        if strcmpi(animalList(iMonkey).secondInCharge,peopleList.shortName{iP})
-                            secondInCharge = iP;
-                            break;
-                        end
-                    end
-
+                elseif todaysDate-animalList(iMonkey).bodyWeightDate(1) > 6
+                    %if 7 or more days have elapsed since weighing, we
+                    %issue a last warning:
+                    
                     if testing
-                        recipients = maintainerEmailAddress;
+                        recipients = adminContacts.maintainer(1);
                         subject = ['(this is a test) Last warning: ' animalList(iMonkey).animalName ' has not received weekly weight check!'];
                     else
                         recipients = peopleList.contactEmail;       
@@ -87,88 +91,42 @@ function DVMaxWeightChecker()
                             pause(5)
                         end
                     end                 
-                    lastWeighing=nan;
-                else
-                    lastWeighing = (animalList(iMonkey).bodyWeightDate(1));
-                    if datenum(date) - lastWeighing > 6 
-                        disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
-                        monkey_last_warning(animalList(iMonkey),peopleList,'NoWeight',testing,maintainerEmailAddress);
-                        disp(['Warning: ',animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
-                        for iP = 1:size(peopleList,1)
-                            if strcmpi(animalList(iMonkey).personInCharge,peopleList.shortName{iP})
-                                personInCharge = iP;
-                                break;
-                            end
-                        end
-                        secondInCharge = [];
-                        for iP = 1:size(peopleList,1)
-                            if strcmpi(animalList(iMonkey).secondInCharge,peopleList.shortName{iP})
-                                secondInCharge = iP;
-                                break;
-                            end
-                        end
+                              
+                elseif todaysDate - animalList(iMonkey).bodyWeightDate(1) > 4 
+                    %if it's been 5 days since a weighing, issue a reminder
+                    %to weigh the monkey
+                    disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - animalList(iMonkey).bodyWeightDate(1)) ' day(s).'])
 
-                        if testing
-                            recipients = maintainerEmailAddress;
-                            subject = ['(this is a test) Last warning: ' animalList(iMonkey).animalName ' has not received weekly weight check!'];
-                        else
-                            recipients = peopleList.contactEmail;       
-                            subject = ['Last warning: ' animalList(iMonkey).animalName ' has not received weekly weight check!'];
-                        end    
+                    if testing
+                        recepients = adminContacts.maintainer(1);        
+                        subject = ['(this is a test) ' animalList(iMonkey).animalName ' does not have a weight entry from the past 5 days.'];
 
-                        if ~isempty(secondInCharge)
-                            message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not received weekly weight check as of ' datestr(now) '.'],...
-                                ['Person in charge: ' peopleList.fullName{personInCharge} '(' peopleList.contactNumber{personInCharge} ')'],...
-                                ['Second in charge: ' peopleList.fullName{secondInCharge} '(' peopleList.contactNumber{secondInCharge} ')'],...
-                                'Sent from Matlab!'};
-                        else
-                            message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not received weekly weight check as of ' datestr(now) '.'],...
-                                ['Person in charge: ' peopleList.fullName{personInCharge} '(' peopleList.contactNumber{personInCharge} ')'],...                
-                                'Sent from Matlab!'};
-                        end    
-                        messageSent = 0;
-                        while (~messageSent)
-                            try
-                                send_mail_message(recipients,subject,message)
-                                messageSent = 1;            
-                            catch
-                                pause(5)
-                            end
-                        end                    
-                    elseif datenum(date) - lastWeighing > 4 
-                        disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - lastWeighing) ' day(s).'])
-
-                        if testing
-                            recepients = maintainerEmailAddress;        
-                            subject = ['(this is a test) ' animalList(iMonkey).animalName ' does not have a weight entry from the past 5 days.'];
-                            
-                        else
-                            recepients{1} = animalList(iMonkey).contactEmail;
-                            if ~isempty(animalList(iMonkey).secondInCharge)
-                                recepients = {recepients{:},animalList(iMonkey).secondarycontactEmail};
-                            end
-                            subject = [animalList(iMonkey).animalName ' does not have a weight entry from the past 5 days.'];
+                    else
+                        recepients = animalList(iMonkey).contactEmail;
+                        if ~isempty(animalList(iMonkey).secondInCharge)
+                            recepients = {recepients,animalList(iMonkey).secondarycontactEmail};
                         end
-                        message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not been weighed since ' datestr(lastWeighing) '.'],...
-                            'Sent from Matlab! This is a test.'};        
-                        messageSent = 0;
-                        while (~messageSent)
-                            try
-                                send_mail_message(recepients,subject,message)                
-                                messageSent = 1;  
-                            catch
-                                messageSent
-                                pause(5)
-                            end
-                        end                  
+                        subject = [animalList(iMonkey).animalName ' does not have a weight entry from the past 5 days.'];
                     end
+                    message = {[animalList(iMonkey).animalName ' (' animalList(iMonkey).animalID ') has not been weighed since ' datestr(animalList(iMonkey).bodyWeightDate(1)) '.'],...
+                        'Sent from Matlab!'};        
+                    messageSent = 0;
+                    while (~messageSent)
+                        try
+                            send_mail_message(recepients,subject,message)                
+                            messageSent = 1;  
+                        catch
+                            messageSent
+                            pause(5)
+                        end
+                    end                  
                 end
 
             end        
         end
 
         %% Body weight
-        if time >= 18 && weekday(date) == 2   
+        if weekday(date) == 2   
             gf = figure;
             numPlots = 3;
             for iPlot = 1:numPlots
@@ -184,7 +142,7 @@ function DVMaxWeightChecker()
                 hp = [];
                 for iMonkey = monkeyList
                     if animalList(iMonkey).restricted
-                        animalList(iMonkey).days_since_last_weighing = num2str((datenum(date)-animalList(iMonkey).bodyWeightDate(1)));
+                        animalList(iMonkey).days_since_last_weighing = num2str((todaysDate-animalList(iMonkey).bodyWeightDate(1)));
                     else
                         animalList(iMonkey).days_since_last_weighing = 'FW';
                     end
@@ -204,7 +162,7 @@ function DVMaxWeightChecker()
             end
             print(gf,'BodyWeights','-dpng')        
             if testing
-                recepients = maintainerEmailAddress;
+                recepients = adminContacts.maintainer(1);
                 subject = ['(this is a test) Weekly body weights update'];
             else
                 recepients = peopleList.contactEmail;       
@@ -229,7 +187,7 @@ function DVMaxWeightChecker()
         close(conn)
         pause(10)
     catch ME
-        sendCrashEmail(maintainerEmailAddress,ME,'DVMaxWeightChecker')
+        sendCrashEmail(adminContacts.maintainer(1),ME,'DVMaxWeightChecker')
     end
 
 end

@@ -1,7 +1,7 @@
 function monkeyContactUpdater()
     %check whether the contact info for a monkey has updated, and send an
     %email to the monkey team listing the revised contact info
-    testing=1;
+    testing=0;
     maintainerEmailAddress= 'tucker.tomlinson1@northwestern.edu';
     try
         [MonkeyWaterLocation,contactListLocation]=getMonkeyDataLocation();
