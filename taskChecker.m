@@ -18,7 +18,7 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=1;
+    testing=0;
 
     try
         %get the filenames for the current host system:
@@ -111,6 +111,10 @@ function taskChecker()
                     earliestTime=3;
                     leadTime=2;
                     offset=7;
+                case 'quad-weekly'
+                    earliestTime=7;
+                    leadTime=7;
+                    offset=28;
                 case 'bi-weekly'
                     earliestTime=6;
                     leadTime=5;
@@ -203,16 +207,19 @@ function taskChecker()
                     jobHistory=readtable(taskFile,'FileType','spreadsheet','sheet',jobName,'ReadVariableNames',false);
                     %write a line at the end of the tab with the data
                     %currently in the Jobs page
+                    tmp=taskSheet(i,:);
+                    tmp.dateCompleted=m2xdate(tmp.dateCompleted);
+                    tmp.dateDue=m2xdate(tmp.dateDue);
                     if isunix
-                        xlwrite(taskFile,table2cell(taskSheet(i,:)),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
+                        xlwrite(taskFile,table2cell(tmp),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
                     else
-                        xlswrite(taskFile,table2cell(taskSheet(i,:)),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
+                        xlswrite(taskFile,table2cell(tmp),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
                     end
                     %clear the data from the Jobs page:
                     taskSheet.dateCompleted(i)=nan;
                     taskSheet.personCompleting{i}=nan;
                     %update the due date:
-                    taskSheet.dateDue(i)=m2xdate(dueDayNum+offset);
+                    taskSheet.dateDue(i)=dueDayNum+offset;
                     updatedJobsSheet=true;
                     
                 end

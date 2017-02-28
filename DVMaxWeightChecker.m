@@ -98,13 +98,13 @@ function DVMaxWeightChecker()
                     disp(['Warning: ' animalList(iMonkey).animalName ' has not been weighed in ' num2str(datenum(date) - animalList(iMonkey).bodyWeightDate(1)) ' day(s).'])
 
                     if testing
-                        recepients = adminContacts.maintainer(1);        
+                        recipients = adminContacts.maintainer(1);        
                         subject = ['(this is a test) ' animalList(iMonkey).animalName ' does not have a weight entry from the past 5 days.'];
 
                     else
-                        recepients = animalList(iMonkey).contactEmail;
+                        recipients = animalList(iMonkey).contactEmail;
                         if ~isempty(animalList(iMonkey).secondInCharge)
-                            recepients = {recepients,animalList(iMonkey).secondarycontactEmail};
+                            recipients = {recipients,animalList(iMonkey).secondarycontactEmail};
                         end
                         subject = [animalList(iMonkey).animalName ' does not have a weight entry from the past 5 days.'];
                     end
@@ -113,7 +113,7 @@ function DVMaxWeightChecker()
                     messageSent = 0;
                     while (~messageSent)
                         try
-                            send_mail_message(recepients,subject,message)                
+                            send_mail_message(recipients,subject,message)                
                             messageSent = 1;  
                         catch
                             messageSent
@@ -162,10 +162,10 @@ function DVMaxWeightChecker()
             end
             print(gf,'BodyWeights','-dpng')        
             if testing
-                recepients = adminContacts.maintainer(1);
+                recipients = adminContacts.maintainer(1);
                 subject = ['(this is a test) Weekly body weights update'];
             else
-                recepients = peopleList.contactEmail;       
+                recipients = peopleList.contactEmail;       
                 subject = ['Weekly body weights update'];
             end    
 
@@ -175,7 +175,7 @@ function DVMaxWeightChecker()
             messageSent = 0;
             while (~messageSent)
                 try
-                    send_mail_message(recepients,subject,message,'BodyWeights.png')
+                    send_mail_message(recipients,subject,message,'BodyWeights.png')
                     messageSent = 1;            
                 catch
                     pause(5)
