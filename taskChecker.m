@@ -35,6 +35,16 @@ function taskChecker()
                 error('taskChecker:unrecognizedSystem',['Did not recognize the system: ', hostname,' and do not know where to find the taskFile path'])
             end
         end
+        
+        if(testing)
+            % for creating '_testing' file if desired, not necessary if
+            % file already exists
+%             if(~exist(strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end))))
+%                 copyfile(taskFile, strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end)));
+%             end
+            taskFile = strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end));
+        end
+        
         %if we are on a unix system, get the xlwrite drivers into the path
         if  isunix 
             %get the java xls write utility files loaded into the matlab path:
