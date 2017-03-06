@@ -18,7 +18,7 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=0;
+    testing=1;
 
     try
         %get the filenames for the current host system:
@@ -163,7 +163,7 @@ function taskChecker()
                 if today<completionDate
                         %remove the entry and email a warning
                         subject=['task checker: bad completion date!',taskSheet.Task{i},'has a future date'];
-                        message=[{['there is an entry for ',taskSheet.Task(i),' showing the task was completed on: ',num2str( completionDate)],...
+                        message=[{['there is an entry for ',taskSheet.Task{i},' showing the task was completed on: ',datestr( completionDate)],...
                                     'since this day has not heppened yet this is impossible',...
                                     'please re-edit the sheet with the correct date of completion'},...
                                     boilerplate];
