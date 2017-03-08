@@ -18,7 +18,7 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=1;
+    testing=0;
 
     try
         %get the filenames for the current host system:
@@ -207,6 +207,17 @@ function taskChecker()
                         updatedJobsSheet=true;
                         
                     end
+                elseif isempty(taskSheet.personCompleting)
+                    %send an error to get the person to fill in the data
+                    subject=['task checker:',taskSheet.Task{i},': no person entered as responsible'];
+                    message=[{'You must enter a person responsible for completing the task, and a note of what was done',...
+                                    'The personCompleting column of the task checker has been left blank'},...
+                                    boilerplate];
+                    if testing    
+                        send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
+                    else
+                        send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                    end
                 else %if its the completion date
                     %move the completion info to the log tab, and reset the
                     %due date:
@@ -259,7 +270,7 @@ function taskChecker()
                             taskSheet.backupPerson(i),...
                             boilerplate];
                 if testing
-                    send_mail_message(adminContacts.maintainer{1},subject,message,[]);
+                    send_mail_message(adminContacts.maintainer{1},['(testing)',subject],message,[]);
                 else
                     send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
                 end
