@@ -207,7 +207,7 @@ function taskChecker()
                         updatedJobsSheet=true;
                         
                     end
-                elseif isempty(taskSheet.personCompleting)
+                elseif isempty(taskSheet.personCompleting{i})
                     %send an error to get the person to fill in the data
                     subject=['task checker:',taskSheet.Task{i},': no person entered as responsible'];
                     message=[{'You must enter a person responsible for completing the task, and a note of what was done',...
