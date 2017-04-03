@@ -20,7 +20,7 @@ function taskChecker()
     
     testing=0;
 
-    try
+    try  
         %get the filenames for the current host system:
         [~,contactsFile]=getMonkeyDataLocation();
         if ispc
@@ -42,7 +42,7 @@ function taskChecker()
 %             if(~exist(strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end))))
 %                 copyfile(taskFile, strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end)));
 %             end
-            taskFile = strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end));
+            taskFile = strcat(taskFile(1:end-4),'_testingJoe',taskFile(end-3:end));
         end
         
         %if we are on a unix system, get the xlwrite drivers into the path
@@ -66,6 +66,10 @@ function taskChecker()
         %datenums if necessary:
         taskSheet.dateDue=datenum(datetime(taskSheet.dateDue,'ConvertFrom','excel'));
         taskSheet.dateCompleted=datenum(datetime(taskSheet.dateCompleted,'ConvertFrom','excel'));
+        % check taskSheet personCompleting for any entries -- if there are
+        % no entries then taskSheet.personCompleting{.} will throw an error
+%         personCompletingIsCell = iscell(taskSheet.personCompleting(1));
+        
         %set up boilerplate for emails:
         boilerplate={' ',...
             'this message was generated automatically by the taskChecker script',...
@@ -184,7 +188,9 @@ function taskChecker()
                         end
                         %now clear the early entry
                         taskSheet.dateCompleted(i)=nan;
-                        taskSheet.personCompleting{i}=nan;
+                        if(iscell(taskSheet.personCompleting(i)))
+                            taskSheet.personCompleting{i}=nan;
+                        end
                         updatedJobsSheet=true;
                 elseif today<dueDayNum%its not the completion date, check for early completions:
                     if completionDate<(dueDayNum-earliestTime)
@@ -203,11 +209,13 @@ function taskChecker()
                         end
                         %now clear the early entry
                         taskSheet.dateCompleted(i)=nan;
-                        taskSheet.personCompleting{i}=nan;
+                        if(iscell(taskSheet.personCompleting(i)))
+                            taskSheet.personCompleting{i}=nan;
+                        end
                         updatedJobsSheet=true;
                         
                     end
-                elseif isempty(taskSheet.personCompleting{i})
+                elseif ~iscell(taskSheet.personCompleting(i)) || isempty(taskSheet.personCompleting{i})
                     %send an error to get the person to fill in the data
                     subject=['task checker:',taskSheet.Task{i},': no person entered as responsible'];
                     message=[{'You must enter a person responsible for completing the task, and a note of what was done',...
@@ -292,6 +300,7 @@ function taskChecker()
         if updatedJobsSheet
             %write updated jobs to excel file (just overwrite the whole tab):
             taskSheet.dateDue=m2xdate(taskSheet.dateDue);
+            taskSheet.dateCompleted=m2xdate(taskSheet.dateCompleted);
             %the following line was necessary in matlab 2015a, but is not
             %necessary in 2016a
             %taskSheet.dateCompleted=m2xdate(taskSheet.dateCompleted);
