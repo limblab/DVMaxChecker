@@ -18,7 +18,7 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=0;
+    testing=1;
 
     try  
         %get the filenames for the current host system:
@@ -282,8 +282,19 @@ function taskChecker()
                 else
                     send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
                 end
-            elseif today==dueDayNum-leadTime%check to see if we need to issue a reminder
+            elseif today==dueDayNum-leadTime && strcmp(taskSheet.Task{i},'Lab 6 Chair Cleaned') ~= 1 %check to see if we need to issue a reminder -- lab 6 chair cleaned removed per request by RC
                 subject=['REMINDER: ', taskSheet.Task{i},' is due in: ',num2str(leadTime),'days'];
+                message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
+                            ['will be due on ',datestr(dueDayNum)],...
+                            'please make plans to complete this task before the due date'},...
+                            boilerplate];
+                if testing
+                    send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
+                else
+                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
+                end
+            elseif dueDayNum-today < 3 && weekday(today)==6 && (weekday(dueDayNum)==7 || weekday(dueDayNum)==1) % check if today is Fri. and task is due on a Sat. or Sun. -- issue a reminder if so
+                subject=['REMINDER: ', taskSheet.Task{i},' is due over the weekend'];
                 message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
                             ['will be due on ',datestr(dueDayNum)],...
                             'please make plans to complete this task before the due date'},...
@@ -296,7 +307,6 @@ function taskChecker()
             end
             
         end
-        
         if updatedJobsSheet
             %write updated jobs to excel file (just overwrite the whole tab):
             taskSheet.dateDue=m2xdate(taskSheet.dateDue);
