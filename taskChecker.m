@@ -18,7 +18,7 @@ function taskChecker()
     %the checker will check against the day of the year, e.g. may 3rd every
     %year
     
-    testing=1;
+    testing=0;
 
     try  
         %get the filenames for the current host system:
