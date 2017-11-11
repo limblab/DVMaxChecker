@@ -99,6 +99,9 @@ function taskChecker()
                             ' ',...
                             'note that this error can occur if one or more of the names does not match valid contact info in the contacts.xls file'},...
                             boilerplate];
+                % save spreadsheet
+                saveErrorState(taskSheet,taskFile,'respPerson');
+                
                 if testing
                     send_mail_message(adminContacts.maintainer(1),['(testing) ',subject],message,[]);
                 else
@@ -181,6 +184,9 @@ function taskChecker()
                                     'since this day has not heppened yet this is impossible',...
                                     'please re-edit the sheet with the correct date of completion'},...
                                     boilerplate];
+                        % save sheet so Joe can debug
+                        saveErrorState(taskSheet,taskFile,'_futureDate')
+                        
                         if testing    
                             send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                         else
@@ -202,6 +208,10 @@ function taskChecker()
                                     'If you want to reset the interval of checking you should alter the dueDay and due day in the JobChecker.xls file',...
                                     ['so that today falls within ',num2str(earliestTime),' of the due date']},...
                                     boilerplate];
+                                
+                        % save sheet so Joe can debug
+                        saveErrorState(taskSheet,taskFile,'_earlyCompletion')
+                        
                         if testing    
                             send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                         else
@@ -221,6 +231,9 @@ function taskChecker()
                     message=[{'You must enter a person responsible for completing the task, and a note of what was done',...
                                     'The personCompleting column of the task checker has been left blank'},...
                                     boilerplate];
+                    % save sheet so Joe can debug        
+                    saveErrorState(taskSheet,taskFile,'_noPerson');
+                    
                     if testing    
                         send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                     else
@@ -311,7 +324,7 @@ function taskChecker()
             %write updated jobs to excel file (just overwrite the whole tab):
             taskSheet.dateDue=m2xdate(taskSheet.dateDue);
             taskSheet.dateCompleted=m2xdate(taskSheet.dateCompleted);
-            %the following line was necessary in matlab 2015a, but is not
+            %the following line was necessary in mautlab 2015a, but is not
             %necessary in 2016a
             %taskSheet.dateCompleted=m2xdate(taskSheet.dateCompleted);
             if isunix
@@ -323,10 +336,26 @@ function taskChecker()
         
     catch ME
         sendCrashEmail([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer],ME,'task checker')
+        
+        % save the excel spreadsheet as 'JobChecker_crashed'
     end
     
     if isunix
         rmpath([pwd,filesep,'xlwrite'])
     end
     
+end
+
+
+function [] = saveErrorState(taskSheet,taskFile,spreadSheetEnding)
+      
+taskSheetTemp = taskSheet;
+taskSheetTemp.dateDue=m2xdate(taskSheetTemp.dateDue);
+taskSheetTemp.dateCompleted=m2xdate(taskSheetTemp.dateCompleted);
+if isunix
+    xlwrite(strcat(taskFile(1:end-4),spreadSheetEnding,taskFile(end-3:end)),table2cell(taskSheetTemp));%RANGE=A2 starts writing the table at cell A2 and fills as needed
+else
+    xlswrite(strcat(taskFile(1:end-4),spreadSheetEnding,taskFile(end-3:end)),table2cell(taskSheetTemp));%RANGE=A2 starts writing the table at cell A2 and fills as needed
+end
+
 end
