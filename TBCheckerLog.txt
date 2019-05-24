@@ -1,0 +1,98 @@
+tried running TB checker on:
+Mon Sep 10 11:01:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:16:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:20:25 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:25:17 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:27:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:32:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:45:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:47:52 CDT 2018
+tried running TB checker on:
+Mon Sep 10 11:50:08 CDT 2018
+tried running TB checker on:
+Mon Sep 10 12:06:18 CDT 2018
+tried running TB checker on:
+Mon Sep 10 12:10:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 12:16:01 CDT 2018
+tried running TB checker on:
+Mon Sep 10 12:20:01 CDT 2018
+tried running TB checker on:
+Mon Sep 17 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Sep 24 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Oct 1 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Oct 8 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Oct 15 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Oct 22 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Oct 29 06:00:01 CDT 2018
+tried running TB checker on:
+Mon Nov 5 06:00:01 CST 2018
+tried running TB checker on:
+Mon Nov 12 06:00:01 CST 2018
+tried running TB checker on:
+Mon Nov 19 06:00:01 CST 2018
+tried running TB checker on:
+Mon Nov 26 06:00:01 CST 2018
+tried running TB checker on:
+Mon Dec 3 06:00:01 CST 2018
+tried running TB checker on:
+Mon Dec 10 06:00:01 CST 2018
+tried running TB checker on:
+Mon Dec 17 06:00:01 CST 2018
+tried running TB checker on:
+Mon Dec 24 06:00:01 CST 2018
+tried running TB checker on:
+Mon Dec 31 06:00:01 CST 2018
+tried running TB checker on:
+Mon Jan 7 06:00:01 CST 2019
+tried running TB checker on:
+Mon Jan 14 06:00:01 CST 2019
+tried running TB checker on:
+Mon Jan 21 06:00:01 CST 2019
+tried running TB checker on:
+Mon Jan 28 06:00:01 CST 2019
+tried running TB checker on:
+Mon Feb 4 06:00:01 CST 2019
+tried running TB checker on:
+Mon Feb 11 06:00:01 CST 2019
+tried running TB checker on:
+Mon Feb 18 06:00:01 CST 2019
+tried running TB checker on:
+Mon Feb 25 06:00:01 CST 2019
+tried running TB checker on:
+Mon Mar 4 06:00:01 CST 2019
+tried running TB checker on:
+Mon Mar 11 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Mar 18 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Mar 25 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Apr 1 06:00:02 CDT 2019
+tried running TB checker on:
+Mon Apr 8 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Apr 15 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Apr 22 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Apr 29 06:00:01 CDT 2019
+tried running TB checker on:
+Mon May 6 06:00:01 CDT 2019
+tried running TB checker on:
+Mon May 13 06:00:01 CDT 2019
+tried running TB checker on:
+Mon May 20 06:00:01 CDT 2019

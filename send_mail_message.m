@@ -14,7 +14,7 @@ function send_mail_message(id,subject,message,attachment)
 m = 'MillerLabWarnings@northwestern.edu'; 
 
 %get credentials from file:
-credentialFile='/home/tucker/authorizationCredentials/MillerLabWarnings.txt';
+credentialFile='/home/joseph/authorizationCredentials/MillerLabWarnings.txt';
 fid=fopen(credentialFile);
 
 for i=1:2
@@ -53,6 +53,16 @@ props = java.lang.System.getProperties;
 props.setProperty('mail.smtp.auth','true');
 props.setProperty('mail.smtp.socketFactory.class', 'javax.net.ssl.SSLSocketFactory');
 props.setProperty('mail.smtp.socketFactory.port','587');
+
+%% Joseph -- temporary fix while above code is not functioning
+% setpref('Internet','SMTP_Server','smtp.gmail.com');
+% setpref('Internet','E_mail','miller.limblab@gmail.com');
+% setpref('Internet','SMTP_Username','miller.limblab');
+% setpref('Internet','SMTP_Password','');
+% props = java.lang.System.getProperties;
+% props.setProperty('mail.smtp.auth','true');
+% props.setProperty('mail.smtp.socketFactory.class', 'javax.net.ssl.SSLSocketFactory');
+% props.setProperty('mail.smtp.socketFactory.port','465');
 
 %% Send the email
 

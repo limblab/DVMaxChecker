@@ -162,12 +162,12 @@ function DVMaxWaterChecker()
                     message = {message{:},'Sent from Matlab!'};
                         message_sent = 0;
                     while (~message_sent)
-                        try
+%                         try
                             send_mail_message(recipients,subject,message)
                             message_sent = 1;            
-                        catch
-                            pause(5)
-                        end
+%                         catch
+%                             pause(5)
+%                         end
                     end
                 end    
             end

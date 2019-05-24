@@ -336,9 +336,7 @@ function taskChecker()
         
     catch ME
         sendCrashEmail([{'MillerLabWarnings@northwestern.edu'},adminContacts.maintainer],ME,'task checker')
-        
-        % save the excel spreadsheet as 'JobChecker_crashed'
-    end
+end
     
     if isunix
         rmpath([pwd,filesep,'xlwrite'])
