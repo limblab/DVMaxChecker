@@ -96,3 +96,69 @@ tried running TB checker on:
 Mon May 13 06:00:01 CDT 2019
 tried running TB checker on:
 Mon May 20 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Jul 22 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Jul 29 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Aug 5 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Aug 12 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Aug 19 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Aug 26 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Sep 2 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Sep 9 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Sep 16 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Sep 23 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Sep 30 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Oct 7 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Oct 14 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Oct 21 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Oct 28 06:00:01 CDT 2019
+tried running TB checker on:
+Mon Nov 4 06:00:01 CST 2019
+tried running TB checker on:
+Mon Nov 11 06:00:01 CST 2019
+tried running TB checker on:
+Mon Nov 18 06:00:01 CST 2019
+tried running TB checker on:
+Mon Nov 25 06:00:01 CST 2019
+tried running TB checker on:
+Mon Dec 2 06:00:01 CST 2019
+tried running TB checker on:
+Mon Dec 9 06:00:01 CST 2019
+tried running TB checker on:
+Mon Dec 16 06:00:01 CST 2019
+tried running TB checker on:
+Mon Dec 23 06:00:01 CST 2019
+tried running TB checker on:
+Mon Dec 30 06:00:01 CST 2019
+tried running TB checker on:
+Mon Jan 6 06:00:01 CST 2020
+tried running TB checker on:
+Mon Jan 13 06:00:01 CST 2020
+tried running TB checker on:
+Mon Jan 20 06:00:01 CST 2020
+tried running TB checker on:
+Mon Jan 27 06:00:01 CST 2020
+tried running TB checker on:
+Mon Feb 3 06:00:01 CST 2020
+tried running TB checker on:
+Mon Feb 10 06:00:01 CST 2020
+tried running TB checker on:
+Mon Feb 17 06:00:01 CST 2020
+tried running TB checker on:
+Mon Feb 24 06:00:01 CST 2020
+tried running TB checker on:
+Mon Mar 2 06:00:01 CST 2020

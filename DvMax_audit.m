@@ -25,7 +25,16 @@ function animalList=DvMax_audit(varargin)
         javaaddpath([current_folder filesep 'ojdbc6.jar'],'-end')
     end
     %% set variables
-    MonkeyWaterLocation = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\Lab-Wide Animal Info\WeekendWatering\MonkeyWaterData.xlsx';
+    if ispc
+        MonkeyWaterLocation = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\Lab-Wide Animal Info\WeekendWatering\MonkeyWaterData.xlsx';
+    elseif isunix
+        [~,hostname]=unix('hostname');
+        if strcmp(strtrim(hostname),'Rhea')
+            %mount point for fsmresfiles on tucker's account on Rhea:
+            MonkeyWaterLocation='/media/fsmresfiles/limblab/lab_folder/Lab-Wide Animal Info/WeekendWatering/MonkeyWaterData.xlsx';
+        end
+     end
+
     water_codes = {'EP8500','EP9000','EP2000','AC1091'};
     free_water_codes = {'EP9200 ','AC1093','FC1025'};
     water_restriction_start_codes = {'EP9100','AC1092'};
@@ -57,8 +66,9 @@ function animalList=DvMax_audit(varargin)
     %% connect to database and load monkey list
 %     conn = database('OR','dvmax_lmiller','dvmax','Vendor','Oracle',...
 %         'DriverType','thin','Server','risdatsvr3.itcs.northwestern.edu','PortNumber',1521);    
-    conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
-        
+%     conn = database('ORPROD','dvmax_lmiller','dvmax','Vendor','Oracle','DriverType','thin','Server','risdatprd.ci.northwestern.edu','PortNumber',1521);
+    conn = connectToDVMax();
+    
     animalList = load_animal_list(MonkeyWaterLocation);
     save('animalList','animalList')
 %     load('audit_animalList.mat')

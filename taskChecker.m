@@ -24,13 +24,13 @@ function taskChecker()
         %get the filenames for the current host system:
         [~,contactsFile]=getMonkeyDataLocation();
         if ispc
-            taskFile='\\fsmresfiles\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xls';
+            taskFile='\\fsmresfiles\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xlsx';
         elseif isunix
             [~,hostname]=unix('hostname');
             if strcmp(strtrim(hostname),'tucker-pc')
-                taskFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/JobChecker.xls';
+                taskFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/JobChecker.xlsx';
             elseif strcmp(strtrim(hostname),'Rhea')
-                taskFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/JobChecker.xls';
+                taskFile='/media/fsmresfiles/limblab/lab_folder/General-Lab-Stuff/checkerData/JobChecker.xlsx';
             else
                 error('taskChecker:unrecognizedSystem',['Did not recognize the system: ', hostname,' and do not know where to find the taskFile path'])
             end
@@ -42,7 +42,7 @@ function taskChecker()
 %             if(~exist(strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end))))
 %                 copyfile(taskFile, strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end)));
 %             end
-            taskFile = strcat(taskFile(1:end-4),'_testingJoe',taskFile(end-3:end));
+%             taskFile = strcat(taskFile(1:end-4),'_testingJoe',taskFile(end-3:end));
         end
         
         %if we are on a unix system, get the xlwrite drivers into the path

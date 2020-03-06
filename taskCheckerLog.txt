@@ -591,3 +591,479 @@ tried running task checker on:
 Thu May 23 06:00:01 CDT 2019
 tried running task checker on:
 Fri May 24 06:00:01 CDT 2019
+tried running task checker on:
+Wed Jul 17 13:59:18 CDT 2019
+tried running task checker on:
+Wed Jul 17 15:10:31 CDT 2019
+tried running task checker on:
+Wed Jul 17 15:18:51 CDT 2019
+tried running task checker on:
+Wed Jul 17 15:31:02 CDT 2019
+tried running task checker on:
+Wed Jul 17 15:35:01 CDT 2019
+tried running task checker on:
+Thu Jul 18 06:00:01 CDT 2019
+tried running task checker on:
+Fri Jul 19 06:00:01 CDT 2019
+tried running task checker on:
+Sat Jul 20 06:00:01 CDT 2019
+tried running task checker on:
+Sun Jul 21 06:00:01 CDT 2019
+tried running task checker on:
+Mon Jul 22 06:00:01 CDT 2019
+tried running task checker on:
+Tue Jul 23 06:00:01 CDT 2019
+tried running task checker on:
+Wed Jul 24 06:00:01 CDT 2019
+tried running task checker on:
+Thu Jul 25 06:00:01 CDT 2019
+tried running task checker on:
+Fri Jul 26 06:00:01 CDT 2019
+tried running task checker on:
+Sat Jul 27 06:00:01 CDT 2019
+tried running task checker on:
+Sun Jul 28 06:00:01 CDT 2019
+tried running task checker on:
+Mon Jul 29 06:00:01 CDT 2019
+tried running task checker on:
+Tue Jul 30 06:00:01 CDT 2019
+tried running task checker on:
+Wed Jul 31 06:00:01 CDT 2019
+tried running task checker on:
+Thu Aug 1 06:00:01 CDT 2019
+tried running task checker on:
+Fri Aug 2 06:00:01 CDT 2019
+tried running task checker on:
+Sat Aug 3 06:00:01 CDT 2019
+tried running task checker on:
+Sun Aug 4 06:00:01 CDT 2019
+tried running task checker on:
+Mon Aug 5 06:00:01 CDT 2019
+tried running task checker on:
+Tue Aug 6 06:00:01 CDT 2019
+tried running task checker on:
+Wed Aug 7 06:00:01 CDT 2019
+tried running task checker on:
+Thu Aug 8 06:00:01 CDT 2019
+tried running task checker on:
+Fri Aug 9 06:00:01 CDT 2019
+tried running task checker on:
+Sat Aug 10 06:00:01 CDT 2019
+tried running task checker on:
+Sun Aug 11 06:00:01 CDT 2019
+tried running task checker on:
+Mon Aug 12 06:00:01 CDT 2019
+tried running task checker on:
+Tue Aug 13 06:00:01 CDT 2019
+tried running task checker on:
+Wed Aug 14 06:00:01 CDT 2019
+tried running task checker on:
+Thu Aug 15 06:00:01 CDT 2019
+tried running task checker on:
+Fri Aug 16 06:00:02 CDT 2019
+tried running task checker on:
+Sat Aug 17 06:00:01 CDT 2019
+tried running task checker on:
+Sun Aug 18 06:00:01 CDT 2019
+tried running task checker on:
+Mon Aug 19 06:00:01 CDT 2019
+tried running task checker on:
+Tue Aug 20 06:00:01 CDT 2019
+tried running task checker on:
+Wed Aug 21 06:00:01 CDT 2019
+tried running task checker on:
+Thu Aug 22 06:00:01 CDT 2019
+tried running task checker on:
+Fri Aug 23 06:00:01 CDT 2019
+tried running task checker on:
+Sat Aug 24 06:00:01 CDT 2019
+tried running task checker on:
+Sun Aug 25 06:00:01 CDT 2019
+tried running task checker on:
+Mon Aug 26 06:00:01 CDT 2019
+tried running task checker on:
+Tue Aug 27 06:00:01 CDT 2019
+tried running task checker on:
+Wed Aug 28 06:00:01 CDT 2019
+tried running task checker on:
+Thu Aug 29 06:00:01 CDT 2019
+tried running task checker on:
+Fri Aug 30 06:00:01 CDT 2019
+tried running task checker on:
+Sat Aug 31 06:00:01 CDT 2019
+tried running task checker on:
+Sun Sep 1 06:00:02 CDT 2019
+tried running task checker on:
+Mon Sep 2 06:00:01 CDT 2019
+tried running task checker on:
+Tue Sep 3 06:00:01 CDT 2019
+tried running task checker on:
+Wed Sep 4 06:00:01 CDT 2019
+tried running task checker on:
+Thu Sep 5 06:00:01 CDT 2019
+tried running task checker on:
+Fri Sep 6 06:00:01 CDT 2019
+tried running task checker on:
+Sat Sep 7 06:00:01 CDT 2019
+tried running task checker on:
+Sun Sep 8 06:00:01 CDT 2019
+tried running task checker on:
+Mon Sep 9 06:00:01 CDT 2019
+tried running task checker on:
+Tue Sep 10 06:00:01 CDT 2019
+tried running task checker on:
+Wed Sep 11 06:00:01 CDT 2019
+tried running task checker on:
+Thu Sep 12 06:00:01 CDT 2019
+tried running task checker on:
+Fri Sep 13 06:00:01 CDT 2019
+tried running task checker on:
+Sat Sep 14 06:00:01 CDT 2019
+tried running task checker on:
+Sun Sep 15 06:00:01 CDT 2019
+tried running task checker on:
+Mon Sep 16 06:00:01 CDT 2019
+tried running task checker on:
+Tue Sep 17 06:00:01 CDT 2019
+tried running task checker on:
+Wed Sep 18 06:00:01 CDT 2019
+tried running task checker on:
+Thu Sep 19 06:00:01 CDT 2019
+tried running task checker on:
+Fri Sep 20 06:00:01 CDT 2019
+tried running task checker on:
+Sat Sep 21 06:00:01 CDT 2019
+tried running task checker on:
+Sun Sep 22 06:00:01 CDT 2019
+tried running task checker on:
+Mon Sep 23 06:00:01 CDT 2019
+tried running task checker on:
+Tue Sep 24 06:00:01 CDT 2019
+tried running task checker on:
+Wed Sep 25 06:00:01 CDT 2019
+tried running task checker on:
+Thu Sep 26 06:00:01 CDT 2019
+tried running task checker on:
+Fri Sep 27 06:00:01 CDT 2019
+tried running task checker on:
+Sat Sep 28 06:00:01 CDT 2019
+tried running task checker on:
+Sun Sep 29 06:00:01 CDT 2019
+tried running task checker on:
+Mon Sep 30 06:00:01 CDT 2019
+tried running task checker on:
+Tue Oct 1 06:00:01 CDT 2019
+tried running task checker on:
+Wed Oct 2 06:00:01 CDT 2019
+tried running task checker on:
+Thu Oct 3 06:00:01 CDT 2019
+tried running task checker on:
+Fri Oct 4 06:00:01 CDT 2019
+tried running task checker on:
+Sat Oct 5 06:00:01 CDT 2019
+tried running task checker on:
+Sun Oct 6 06:00:01 CDT 2019
+tried running task checker on:
+Mon Oct 7 06:00:01 CDT 2019
+tried running task checker on:
+Tue Oct 8 06:00:01 CDT 2019
+tried running task checker on:
+Wed Oct 9 06:00:01 CDT 2019
+tried running task checker on:
+Thu Oct 10 06:00:01 CDT 2019
+tried running task checker on:
+Fri Oct 11 06:00:01 CDT 2019
+tried running task checker on:
+Sat Oct 12 06:00:01 CDT 2019
+tried running task checker on:
+Sun Oct 13 06:00:01 CDT 2019
+tried running task checker on:
+Mon Oct 14 06:00:01 CDT 2019
+tried running task checker on:
+Tue Oct 15 06:00:01 CDT 2019
+tried running task checker on:
+Wed Oct 16 06:00:01 CDT 2019
+tried running task checker on:
+Thu Oct 17 06:00:01 CDT 2019
+tried running task checker on:
+Fri Oct 18 06:00:01 CDT 2019
+tried running task checker on:
+Sat Oct 19 06:00:01 CDT 2019
+tried running task checker on:
+Sun Oct 20 06:00:01 CDT 2019
+tried running task checker on:
+Mon Oct 21 06:00:01 CDT 2019
+tried running task checker on:
+Tue Oct 22 06:00:01 CDT 2019
+tried running task checker on:
+Wed Oct 23 06:00:01 CDT 2019
+tried running task checker on:
+Thu Oct 24 06:00:01 CDT 2019
+tried running task checker on:
+Fri Oct 25 06:00:01 CDT 2019
+tried running task checker on:
+Sat Oct 26 06:00:01 CDT 2019
+tried running task checker on:
+Sun Oct 27 06:00:01 CDT 2019
+tried running task checker on:
+Mon Oct 28 06:00:01 CDT 2019
+tried running task checker on:
+Tue Oct 29 06:00:01 CDT 2019
+tried running task checker on:
+Wed Oct 30 06:00:01 CDT 2019
+tried running task checker on:
+Thu Oct 31 06:00:01 CDT 2019
+tried running task checker on:
+Fri Nov 1 06:00:01 CDT 2019
+tried running task checker on:
+Sat Nov 2 06:00:02 CDT 2019
+tried running task checker on:
+Sun Nov 3 06:00:01 CST 2019
+tried running task checker on:
+Mon Nov 4 06:00:01 CST 2019
+tried running task checker on:
+Tue Nov 5 06:00:01 CST 2019
+tried running task checker on:
+Wed Nov 6 06:00:01 CST 2019
+tried running task checker on:
+Thu Nov 7 06:00:01 CST 2019
+tried running task checker on:
+Fri Nov 8 06:00:01 CST 2019
+tried running task checker on:
+Sat Nov 9 06:00:01 CST 2019
+tried running task checker on:
+Sun Nov 10 06:00:01 CST 2019
+tried running task checker on:
+Mon Nov 11 06:00:01 CST 2019
+tried running task checker on:
+Tue Nov 12 06:00:01 CST 2019
+tried running task checker on:
+Wed Nov 13 06:00:01 CST 2019
+tried running task checker on:
+Thu Nov 14 06:00:01 CST 2019
+tried running task checker on:
+Fri Nov 15 06:00:01 CST 2019
+tried running task checker on:
+Sat Nov 16 06:00:01 CST 2019
+tried running task checker on:
+Sun Nov 17 06:00:01 CST 2019
+tried running task checker on:
+Mon Nov 18 06:00:01 CST 2019
+tried running task checker on:
+Tue Nov 19 06:00:01 CST 2019
+tried running task checker on:
+Wed Nov 20 06:00:01 CST 2019
+tried running task checker on:
+Thu Nov 21 06:00:01 CST 2019
+tried running task checker on:
+Fri Nov 22 06:00:01 CST 2019
+tried running task checker on:
+Sat Nov 23 06:00:01 CST 2019
+tried running task checker on:
+Sun Nov 24 06:00:01 CST 2019
+tried running task checker on:
+Mon Nov 25 06:00:01 CST 2019
+tried running task checker on:
+Tue Nov 26 06:00:01 CST 2019
+tried running task checker on:
+Wed Nov 27 06:00:01 CST 2019
+tried running task checker on:
+Thu Nov 28 06:00:01 CST 2019
+tried running task checker on:
+Fri Nov 29 06:00:01 CST 2019
+tried running task checker on:
+Sat Nov 30 06:00:01 CST 2019
+tried running task checker on:
+Sun Dec 1 06:00:01 CST 2019
+tried running task checker on:
+Mon Dec 2 06:00:01 CST 2019
+tried running task checker on:
+Tue Dec 3 06:00:01 CST 2019
+tried running task checker on:
+Wed Dec 4 06:00:01 CST 2019
+tried running task checker on:
+Thu Dec 5 06:00:01 CST 2019
+tried running task checker on:
+Fri Dec 6 06:00:01 CST 2019
+tried running task checker on:
+Sat Dec 7 06:00:01 CST 2019
+tried running task checker on:
+Sun Dec 8 06:00:01 CST 2019
+tried running task checker on:
+Mon Dec 9 06:00:01 CST 2019
+tried running task checker on:
+Tue Dec 10 06:00:01 CST 2019
+tried running task checker on:
+Wed Dec 11 06:00:01 CST 2019
+tried running task checker on:
+Thu Dec 12 06:00:01 CST 2019
+tried running task checker on:
+Fri Dec 13 06:00:01 CST 2019
+tried running task checker on:
+Sat Dec 14 06:00:01 CST 2019
+tried running task checker on:
+Sun Dec 15 06:00:01 CST 2019
+tried running task checker on:
+Mon Dec 16 06:00:01 CST 2019
+tried running task checker on:
+Tue Dec 17 06:00:01 CST 2019
+tried running task checker on:
+Wed Dec 18 06:00:01 CST 2019
+tried running task checker on:
+Thu Dec 19 06:00:01 CST 2019
+tried running task checker on:
+Fri Dec 20 06:00:01 CST 2019
+tried running task checker on:
+Sat Dec 21 06:00:01 CST 2019
+tried running task checker on:
+Sun Dec 22 06:00:01 CST 2019
+tried running task checker on:
+Mon Dec 23 06:00:01 CST 2019
+tried running task checker on:
+Tue Dec 24 06:00:01 CST 2019
+tried running task checker on:
+Wed Dec 25 06:00:01 CST 2019
+tried running task checker on:
+Thu Dec 26 06:00:01 CST 2019
+tried running task checker on:
+Fri Dec 27 06:00:01 CST 2019
+tried running task checker on:
+Sat Dec 28 06:00:01 CST 2019
+tried running task checker on:
+Sun Dec 29 06:00:01 CST 2019
+tried running task checker on:
+Mon Dec 30 06:00:01 CST 2019
+tried running task checker on:
+Tue Dec 31 06:00:01 CST 2019
+tried running task checker on:
+Wed Jan 1 06:00:01 CST 2020
+tried running task checker on:
+Thu Jan 2 06:00:01 CST 2020
+tried running task checker on:
+Fri Jan 3 06:00:01 CST 2020
+tried running task checker on:
+Sat Jan 4 06:00:02 CST 2020
+tried running task checker on:
+Sun Jan 5 06:00:01 CST 2020
+tried running task checker on:
+Mon Jan 6 06:00:01 CST 2020
+tried running task checker on:
+Tue Jan 7 06:00:01 CST 2020
+tried running task checker on:
+Wed Jan 8 06:00:01 CST 2020
+tried running task checker on:
+Thu Jan 9 06:00:01 CST 2020
+tried running task checker on:
+Fri Jan 10 06:00:01 CST 2020
+tried running task checker on:
+Sat Jan 11 06:00:01 CST 2020
+tried running task checker on:
+Sun Jan 12 06:00:01 CST 2020
+tried running task checker on:
+Mon Jan 13 06:00:01 CST 2020
+tried running task checker on:
+Tue Jan 14 06:00:01 CST 2020
+tried running task checker on:
+Wed Jan 15 06:00:01 CST 2020
+tried running task checker on:
+Thu Jan 16 06:00:01 CST 2020
+tried running task checker on:
+Fri Jan 17 06:00:01 CST 2020
+tried running task checker on:
+Sat Jan 18 06:00:01 CST 2020
+tried running task checker on:
+Sun Jan 19 06:00:01 CST 2020
+tried running task checker on:
+Mon Jan 20 06:00:01 CST 2020
+tried running task checker on:
+Tue Jan 21 06:00:01 CST 2020
+tried running task checker on:
+Wed Jan 22 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Jan 23 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Jan 24 06:00:01 CST 2020
+tried running monkey status checker on:
+Sat Jan 25 06:00:01 CST 2020
+tried running monkey status checker on:
+Sun Jan 26 06:00:01 CST 2020
+tried running monkey status checker on:
+Mon Jan 27 06:00:01 CST 2020
+tried running monkey status checker on:
+Tue Jan 28 06:00:01 CST 2020
+tried running monkey status checker on:
+Wed Jan 29 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Jan 30 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Jan 31 06:00:01 CST 2020
+tried running monkey status checker on:
+Sat Feb 1 06:00:01 CST 2020
+tried running monkey status checker on:
+Sun Feb 2 06:00:01 CST 2020
+tried running monkey status checker on:
+Mon Feb 3 06:00:01 CST 2020
+tried running monkey status checker on:
+Tue Feb 4 06:00:01 CST 2020
+tried running monkey status checker on:
+Wed Feb 5 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Feb 6 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Feb 7 06:00:01 CST 2020
+tried running monkey status checker on:
+Sat Feb 8 06:00:01 CST 2020
+tried running monkey status checker on:
+Sun Feb 9 06:00:01 CST 2020
+tried running monkey status checker on:
+Mon Feb 10 06:00:01 CST 2020
+tried running monkey status checker on:
+Tue Feb 11 06:00:01 CST 2020
+tried running monkey status checker on:
+Wed Feb 12 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Feb 13 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Feb 14 06:00:01 CST 2020
+tried running monkey status checker on:
+Sat Feb 15 06:00:01 CST 2020
+tried running monkey status checker on:
+Sun Feb 16 06:00:01 CST 2020
+tried running monkey status checker on:
+Mon Feb 17 06:00:01 CST 2020
+tried running monkey status checker on:
+Tue Feb 18 06:00:01 CST 2020
+tried running monkey status checker on:
+Wed Feb 19 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Feb 20 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Feb 21 06:00:01 CST 2020
+tried running monkey status checker on:
+Sat Feb 22 06:00:01 CST 2020
+tried running monkey status checker on:
+Sun Feb 23 06:00:01 CST 2020
+tried running monkey status checker on:
+Mon Feb 24 06:00:01 CST 2020
+tried running monkey status checker on:
+Tue Feb 25 06:00:01 CST 2020
+tried running monkey status checker on:
+Wed Feb 26 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Feb 27 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Feb 28 06:00:01 CST 2020
+tried running monkey status checker on:
+Sat Feb 29 06:00:01 CST 2020
+tried running monkey status checker on:
+Sun Mar 1 06:00:01 CST 2020
+tried running monkey status checker on:
+Mon Mar 2 06:00:01 CST 2020
+tried running monkey status checker on:
+Tue Mar 3 06:00:01 CST 2020
+tried running monkey status checker on:
+Wed Mar 4 06:00:01 CST 2020
+tried running monkey status checker on:
+Thu Mar 5 06:00:01 CST 2020
+tried running monkey status checker on:
+Fri Mar 6 06:00:01 CST 2020
