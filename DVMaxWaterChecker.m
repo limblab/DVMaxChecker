@@ -14,9 +14,9 @@ function DVMaxWaterChecker()
         
         for iMonkey = 1:length(animalList)
             animalList(iMonkey).animalName;
-            cagecardID = animalList(iMonkey).cageID;
+            cagecardID = strtrim(animalList(iMonkey).cageID);
             cagecardID(strfind(cagecardID,'C')) = [];
-
+        
             data=fetchMonkeyRecord(conn,cagecardID);
 
             if todayIsAHoliday

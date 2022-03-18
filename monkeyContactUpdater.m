@@ -29,7 +29,7 @@ function monkeyContactUpdater()
         end
         ccmList = readtable(contactListLocation,'FileType','spreadsheet','sheet','CCM'); 
 
-        if ~isequal(animalList2,oldAnimalList2)
+        if ~isequal(animalList2,oldAnimalList2) || 1==1
             subject = 'NHP caretaker list update';
             messageTable = {};
             for iAnimal = 1:length(animalList)

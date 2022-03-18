@@ -34,7 +34,7 @@ function TBChecker()
                         ' ',...
                         ['For tech support on this checker, contact: ',adminContacts.maintainer{1}]};
                 if testing
-                    send_mail_message(recipients,['(testing)',subject],message)
+                    send_mail_message(d,['(testing)',subject],message)
                 else
                     send_mail_message(recipients,subject,message)
                 end

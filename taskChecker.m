@@ -24,7 +24,8 @@ function taskChecker()
         %get the filenames for the current host system:
         [~,contactsFile]=getMonkeyDataLocation();
         if ispc
-            taskFile='\\fsmresfiles\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xls';
+%             taskFile='\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xls';
+            taskFile = 'R:\limblab\lab_folder\General-Lab-Stuff\checkerData\JobChecker.xlsx';
         elseif isunix
             [~,hostname]=unix('hostname');
             if strcmp(strtrim(hostname),'tucker-pc')
@@ -119,6 +120,7 @@ function taskChecker()
                 dueDayNum=datenum(taskSheet.dateDue(i));
             end
             dueDay=datevec(dueDayNum);
+            check_task=1;
             switch taskSheet.frequency{i}
                 case 'daily'
                     earliestTime=0;
@@ -153,6 +155,13 @@ function taskChecker()
                     tmp=dueDay;
                     tmp(1)=tmp(1)+1;
                     offset=datenum(tmp)-datenum(dueDay);
+                case 'on-hold'
+                    earliestTime =60;
+                    leadTime=30;
+                    tmp=dueDay;
+                    tmp(1)=tmp(1)+1;
+                    offset=datenum(tmp)-datenum(dueDay);
+                    check_task = 0;
                 otherwise
                     error('taskChecker:badFrequency',['frequency must be one of: daily, weekly, bi-weekly, monthly, or yearly. The spec: ', taskSheet.frequency{i},' is not recognized'])
             end
@@ -168,157 +177,158 @@ function taskChecker()
             end
             
            %now see if we have anything to do today:
-            if ~isnan(taskSheet.dateCompleted(i))%we have a date entered for this task
-                if abs(datenum(taskSheet.dateCompleted(i))-today)>1000
-                    %if we have a HUGE difference, we are probably working with
-                    %excel datenums rather than matlab datenums
-                    completionDate=datenum(datetime(datenum(taskSheet.dateCompleted(i)),'ConvertFrom','excel'));
-                else
-                    completionDate=taskSheet.dateCompleted(i);
-                end
-                % check that the entered date is before today:
-                if today<completionDate
-                        %remove the entry and email a warning
-                        subject=['task checker: bad completion date!',taskSheet.Task{i},'has a future date'];
-                        message=[{['there is an entry for ',taskSheet.Task{i},' showing the task was completed on: ',datestr( completionDate)],...
-                                    'since this day has not heppened yet this is impossible',...
-                                    'please re-edit the sheet with the correct date of completion'},...
-                                    boilerplate];
-                        % save sheet so Joe can debug
-                        saveErrorState(taskSheet,taskFile,'_futureDate')
-                        
-                        if testing    
-                            send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
-                        else
-                            send_mail_message([primaryContact,secondaryContact],subject,message,[]);
-                        end
-                        %now clear the early entry
-                        taskSheet.dateCompleted(i)=nan;
-                        if(iscell(taskSheet.personCompleting(i)))
-                            taskSheet.personCompleting{i}=nan;
-                        end
-                        updatedJobsSheet=true;
-                elseif today<dueDayNum%its not the completion date, check for early completions:
-                    if completionDate<(dueDayNum-earliestTime)
-                        %remove the entry and email a warning
-                        subject=['task checker:',taskSheet.Task{i},': early task completion'];
-                        message=[{'Tasks should be completed at regular intervals',...
-                                    'completing a task too early results in a gap between completions',...
-                                    ['the ',taskSheet.Task{i},' task was completed: ',num2str(dueDayNum-today),' days early'],...
-                                    'If you want to reset the interval of checking you should alter the dueDay and due day in the JobChecker.xls file',...
-                                    ['so that today falls within ',num2str(earliestTime),' of the due date']},...
-                                    boilerplate];
-                                
-                        % save sheet so Joe can debug
-                        saveErrorState(taskSheet,taskFile,'_earlyCompletion')
-                        
-                        if testing    
-                            send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
-                        else
-                            send_mail_message([primaryContact,secondaryContact],subject,message,[]);
-                        end
-                        %now clear the early entry
-                        taskSheet.dateCompleted(i)=nan;
-                        if(iscell(taskSheet.personCompleting(i)))
-                            taskSheet.personCompleting{i}=nan;
-                        end
-                        updatedJobsSheet=true;
-                        
+           if(check_task==1)
+                if ~isnan(taskSheet.dateCompleted(i))%we have a date entered for this task
+                    if abs(datenum(taskSheet.dateCompleted(i))-today)>1000
+                        %if we have a HUGE difference, we are probably working with
+                        %excel datenums rather than matlab datenums
+                        completionDate=datenum(datetime(datenum(taskSheet.dateCompleted(i)),'ConvertFrom','excel'));
+                    else
+                        completionDate=taskSheet.dateCompleted(i);
                     end
-                elseif ~iscell(taskSheet.personCompleting(i)) || isempty(taskSheet.personCompleting{i})
-                    %send an error to get the person to fill in the data
-                    subject=['task checker:',taskSheet.Task{i},': no person entered as responsible'];
-                    message=[{'You must enter a person responsible for completing the task, and a note of what was done',...
-                                    'The personCompleting column of the task checker has been left blank'},...
-                                    boilerplate];
-                    % save sheet so Joe can debug        
-                    saveErrorState(taskSheet,taskFile,'_noPerson');
-                    
-                    if testing    
+                    % check that the entered date is before today:
+                    if today<completionDate
+                            %remove the entry and email a warning
+                            subject=['task checker: bad completion date!',taskSheet.Task{i},'has a future date'];
+                            message=[{['there is an entry for ',taskSheet.Task{i},' showing the task was completed on: ',datestr( completionDate)],...
+                                        'since this day has not heppened yet this is impossible',...
+                                        'please re-edit the sheet with the correct date of completion'},...
+                                        boilerplate];
+                            % save sheet so Joe can debug
+                            saveErrorState(taskSheet,taskFile,'_futureDate')
+
+                            if testing    
+                                send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
+                            else
+                                send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                            end
+                            %now clear the early entry
+                            taskSheet.dateCompleted(i)=nan;
+                            if(iscell(taskSheet.personCompleting(i)))
+                                taskSheet.personCompleting{i}=nan;
+                            end
+                            updatedJobsSheet=true;
+                    elseif today<dueDayNum%its not the completion date, check for early completions:
+                        if completionDate<(dueDayNum-earliestTime)
+                            %remove the entry and email a warning
+                            subject=['task checker:',taskSheet.Task{i},': early task completion'];
+                            message=[{'Tasks should be completed at regular intervals',...
+                                        'completing a task too early results in a gap between completions',...
+                                        ['the ',taskSheet.Task{i},' task was completed: ',num2str(dueDayNum-today),' days early'],...
+                                        'If you want to reset the interval of checking you should alter the dueDay and due day in the JobChecker.xls file',...
+                                        ['so that today falls within ',num2str(earliestTime),' of the due date']},...
+                                        boilerplate];
+
+                            % save sheet so Joe can debug
+                            saveErrorState(taskSheet,taskFile,'_earlyCompletion')
+
+                            if testing    
+                                send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
+                            else
+                                send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                            end
+                            %now clear the early entry
+                            taskSheet.dateCompleted(i)=nan;
+                            if(iscell(taskSheet.personCompleting(i)))
+                                taskSheet.personCompleting{i}=nan;
+                            end
+                            updatedJobsSheet=true;
+
+                        end
+                    elseif ~iscell(taskSheet.personCompleting(i)) || isempty(taskSheet.personCompleting{i})
+                        %send an error to get the person to fill in the data
+                        subject=['task checker:',taskSheet.Task{i},': no person entered as responsible'];
+                        message=[{'You must enter a person responsible for completing the task, and a note of what was done',...
+                                        'The personCompleting column of the task checker has been left blank'},...
+                                        boilerplate];
+                        % save sheet so Joe can debug        
+                        saveErrorState(taskSheet,taskFile,'_noPerson');
+
+                        if testing    
+                            send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
+                        else
+                            send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                        end
+                    else %if its the completion date
+                        %move the completion info to the log tab, and reset the
+                        %due date:
+
+                        %load the logging tab for this task:
+                        jobName=taskSheet.Task{i};
+                        jobName(jobName==' ')=[];
+                        jobHistory=readtable(taskFile,'FileType','spreadsheet','sheet',jobName,'ReadVariableNames',false);
+                        %write a line at the end of the tab with the data
+                        %currently in the Jobs page
+                        tmp=taskSheet(i,:);
+                        tmp.dateCompleted=m2xdate(tmp.dateCompleted);
+                        tmp.dateDue=m2xdate(tmp.dateDue);
+                        if isunix
+                            xlwrite(taskFile,table2cell(tmp),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
+                        else
+                            xlswrite(taskFile,table2cell(tmp),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
+                        end
+                        %clear the data from the Jobs page:
+                        taskSheet.dateCompleted(i)=nan;
+                        taskSheet.personCompleting{i}=nan;
+                        %update the due date:
+                        taskSheet.dateDue(i)=dueDayNum+offset;
+                        updatedJobsSheet=true;
+
+                    end
+                %if we don't have data see about warnings etc:
+                elseif today==dueDayNum%if this is the due date issue a warning
+                    subject=['WARNING: ', taskSheet.Task{i},' is due TODAY'];
+                    message=[{['this is an automated warning that the recurring task: ',taskSheet.Task{i}],...
+                                'is due today, and has not been completed.',...
+                                'Please complete this task before the end of the day'},...
+                                {'person responsible:'},...
+                                taskSheet.responsiblePerson(i),...
+                                {'secondary person:'},...
+                                taskSheet.backupPerson(i),...
+                                boilerplate];
+                            if testing
+                                send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
+                            else
+                                send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
+                            end
+                elseif today>dueDayNum%if the task is overdue
+                    subject=['TASK OVERDUE!!!: ', taskSheet.Task{i},' was due on: ',datestr(dueDayNum)];
+                    message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
+                                'is overdue. Please complete this task ASAP'},...
+                                {'person responsible:'},...
+                                taskSheet.responsiblePerson(i),...
+                                {'secondary person:'},...
+                                taskSheet.backupPerson(i),...
+                                boilerplate];
+                    if testing
+                        send_mail_message(adminContacts.maintainer{1},['(testing)',subject],message,[]);
+                    else
+                        send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
+                    end
+                elseif today==dueDayNum-leadTime && strcmp(taskSheet.Task{i},'Lab 6 Chair Cleaned') ~= 1 %check to see if we need to issue a reminder -- lab 6 chair cleaned removed per request by RC
+                    subject=['REMINDER: ', taskSheet.Task{i},' is due in: ',num2str(leadTime),'days'];
+                    message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
+                                ['will be due on ',datestr(dueDayNum)],...
+                                'please make plans to complete this task before the due date'},...
+                                boilerplate];
+                    if testing
                         send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                     else
-                        send_mail_message([primaryContact,secondaryContact],subject,message,[]);
+                        send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
                     end
-                else %if its the completion date
-                    %move the completion info to the log tab, and reset the
-                    %due date:
-                    
-                    %load the logging tab for this task:
-                    jobName=taskSheet.Task{i};
-                    jobName(jobName==' ')=[];
-                    jobHistory=readtable(taskFile,'FileType','spreadsheet','sheet',jobName,'ReadVariableNames',false);
-                    %write a line at the end of the tab with the data
-                    %currently in the Jobs page
-                    tmp=taskSheet(i,:);
-                    tmp.dateCompleted=m2xdate(tmp.dateCompleted);
-                    tmp.dateDue=m2xdate(tmp.dateDue);
-                    if isunix
-                        xlwrite(taskFile,table2cell(tmp),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
+                elseif dueDayNum-today < 3 && weekday(today)==6 && (weekday(dueDayNum)==7 || weekday(dueDayNum)==1) % check if today is Fri. and task is due on a Sat. or Sun. -- issue a reminder if so
+                    subject=['REMINDER: ', taskSheet.Task{i},' is due over the weekend'];
+                    message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
+                                ['will be due on ',datestr(dueDayNum)],...
+                                'please make plans to complete this task before the due date'},...
+                                boilerplate];
+                    if testing
+                        send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
                     else
-                        xlswrite(taskFile,table2cell(tmp),jobName,['A',num2str(size(jobHistory,1)+1)]);%add 1 to line number to append a row below existing data, starting in column A
+                        send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
                     end
-                    %clear the data from the Jobs page:
-                    taskSheet.dateCompleted(i)=nan;
-                    taskSheet.personCompleting{i}=nan;
-                    %update the due date:
-                    taskSheet.dateDue(i)=dueDayNum+offset;
-                    updatedJobsSheet=true;
-                    
                 end
-            %if we don't have data see about warnings etc:
-            elseif today==dueDayNum%if this is the due date issue a warning
-                subject=['WARNING: ', taskSheet.Task{i},' is due TODAY'];
-                message=[{['this is an automated warning that the recurring task: ',taskSheet.Task{i}],...
-                            'is due today, and has not been completed.',...
-                            'Please complete this task before the end of the day'},...
-                            {'person responsible:'},...
-                            taskSheet.responsiblePerson(i),...
-                            {'secondary person:'},...
-                            taskSheet.backupPerson(i),...
-                            boilerplate];
-                        if testing
-                            send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
-                        else
-                            send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
-                        end
-            elseif today>dueDayNum%if the task is overdue
-                subject=['TASK OVERDUE!!!: ', taskSheet.Task{i},' was due on: ',datestr(dueDayNum)];
-                message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
-                            'is overdue. Please complete this task ASAP'},...
-                            {'person responsible:'},...
-                            taskSheet.responsiblePerson(i),...
-                            {'secondary person:'},...
-                            taskSheet.backupPerson(i),...
-                            boilerplate];
-                if testing
-                    send_mail_message(adminContacts.maintainer{1},['(testing)',subject],message,[]);
-                else
-                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},adminContacts.PI(1),primaryContact,secondaryContact],subject,message,[]);
-                end
-            elseif today==dueDayNum-leadTime && strcmp(taskSheet.Task{i},'Lab 6 Chair Cleaned') ~= 1 %check to see if we need to issue a reminder -- lab 6 chair cleaned removed per request by RC
-                subject=['REMINDER: ', taskSheet.Task{i},' is due in: ',num2str(leadTime),'days'];
-                message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
-                            ['will be due on ',datestr(dueDayNum)],...
-                            'please make plans to complete this task before the due date'},...
-                            boilerplate];
-                if testing
-                    send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
-                else
-                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
-                end
-            elseif dueDayNum-today < 3 && weekday(today)==6 && (weekday(dueDayNum)==7 || weekday(dueDayNum)==1) % check if today is Fri. and task is due on a Sat. or Sun. -- issue a reminder if so
-                subject=['REMINDER: ', taskSheet.Task{i},' is due over the weekend'];
-                message=[{['this is an automated reminder that the recurring task: ',taskSheet.Task{i}],...
-                            ['will be due on ',datestr(dueDayNum)],...
-                            'please make plans to complete this task before the due date'},...
-                            boilerplate];
-                if testing
-                    send_mail_message(adminContacts.maintainer{1},['(testing) ',subject],message,[]);
-                else
-                    send_mail_message([{'MillerLabWarnings@northwestern.edu'},primaryContact,secondaryContact],subject,message,[]);
-                end
-            end
-            
+           end
         end
         if updatedJobsSheet
             %write updated jobs to excel file (just overwrite the whole tab):

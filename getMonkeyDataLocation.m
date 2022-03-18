@@ -3,8 +3,8 @@ function [MonkeyWaterLocation,contactListLocation]=getMonkeyDataLocation()
     %that a file can be moved, and then this script can be updated rather
     %than finding all the files that have a hard-coded path
     if ispc
-            MonkeyWaterLocation = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\Lab-Wide Animal Info\WeekendWatering\MonkeyWaterData.xlsx';
-            contactListLocation = '\\fsmresfiles.fsm.northwestern.edu\fsmresfiles\Basic_Sciences\Phys\L_MillerLab\limblab\lab_folder\General-Lab-Stuff\checkerData\contacts.xls';
+            MonkeyWaterLocation = 'R:\limblab\lab_folder\Lab-Wide Animal Info\WeekendWatering\MonkeyWaterData.xlsx';
+            contactListLocation = 'R:\limblab\lab_folder\General-Lab-Stuff\checkerData\contacts.xls';
         elseif isunix 
             [~,hostname]=unix('hostname');
             if strcmp(strtrim(hostname),'tucker-pc')
