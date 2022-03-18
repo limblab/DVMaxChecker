@@ -156,7 +156,11 @@ function DVMaxFoodChecker()
                 for iP = 1:size(peopleList,1)
                     recipients = {recipients{:} peopleList.contactEmail{iP}};
                 end
-                subject = ['All monkeys received food'];
+                if(rand() < 10000)
+                    subject = ['All monkeys received food'];
+                else
+                    subject = ['All monkeys are still monkeys'];
+                end
                 message = {'The following monkeys received food today:'};
                 for iMonkey = 1:length(animalList)
                     message = {message{:},[animalList(iMonkey).animalName '    food: ' animalList(iMonkey).fed_by]};
