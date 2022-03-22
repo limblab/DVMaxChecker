@@ -3,7 +3,7 @@ function [peopleList,animalList,todayIsAHoliday,weekendWaterList,weekendFoodList
     %access to get monkey restriction/contact info in one place for all
     %checker scripts
     [MonkeyWaterLocation,contactListLocation]=getMonkeyDataLocation();
-    peopleList = readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam');
+    peopleList = readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam','Basic',1);
     animalList = loadMonkeyContacts(MonkeyWaterLocation,peopleList); 
     [weekendWaterXlsNum,weekendWaterXls,~] = xlsread(MonkeyWaterLocation,3,'','basic'); 
     weekendDates=x2mdate(weekendWaterXlsNum(1:end)); 

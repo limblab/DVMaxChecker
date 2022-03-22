@@ -3,7 +3,7 @@ function DVMaxWaterChecker()
     
     testing=0;
     [~,contactListLocation]=getMonkeyDataLocation();
-    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin','Basic',1);
     try
         [peopleList,animalList,todayIsAHoliday,weekendWaterList,~]=getMonkeyInfo();
         waterCodes = {'EP8500','EP9000','EP2000','AC1091'};

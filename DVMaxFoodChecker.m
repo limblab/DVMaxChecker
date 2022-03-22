@@ -2,7 +2,7 @@ function DVMaxFoodChecker()
 
     testing=0;
     [~,contactListLocation]=getMonkeyDataLocation();
-    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin','Basic',1);
     try
         [peopleList,animalList,todayIsAHoliday,~,weekendFoodList]=getMonkeyInfo();
         food_codes = {'EP8600','EP8700'};

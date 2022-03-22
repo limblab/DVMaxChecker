@@ -8,12 +8,12 @@ function TBChecker()
     
     testing=0;
     [~,contactListLocation]=getMonkeyDataLocation();
-    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin','Basic',1);
     
     try%try/catch to email maintainer if error occurs
 
         %check monkey staff TB dates:
-        xlsData=readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam');
+        xlsData=readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam','Basic',1);
         %convert excel datenums into matlab datenums:
         xlsData.TBDate=datenum(datetime(xlsData.TBDate,'ConvertFrom','excel'));
         for personIdx=1:size(xlsData,1)
@@ -71,7 +71,7 @@ function TBChecker()
             end
         end
         %check monkey collaborator TB dates:
-        xlsData=readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyCollaborators');
+        xlsData=readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyCollaborators','Basic',1);
         %convert excel datenums into matlab datenums:
         xlsData.TBDate=datenum(datetime(xlsData.TBDate,'ConvertFrom','excel'));
         for personIdx=1:size(xlsData,1)

@@ -41,10 +41,10 @@ function taskChecker()
         if(testing)
             % for creating '_testing' file if desired, not necessary if
             % file already exists
-%             if(~exist(strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end))))
-%                 copyfile(taskFile, strcat(taskFile(1:end-4),'_testing',taskFile(end-3:end)));
-%             end
-%             taskFile = strcat(taskFile(1:end-4),'_testingJoe',taskFile(end-3:end));
+            if(~exist(strcat(taskFile(1:end-5),'_testing',taskFile(end-4:end))))
+                copyfile(taskFile, strcat(taskFile(1:end-5),'_testing',taskFile(end-4:end)));
+            end
+            taskFile = strcat(taskFile(1:end-5),'_testing',taskFile(end-4:end));
         end
         
         %if we are on a unix system, get the xlwrite drivers into the path
@@ -60,10 +60,10 @@ function taskChecker()
         end
         
         %load up our contact info:
-        adminContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','admin');
-        taskContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','monkeyTeam');
+        adminContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','admin','Basic',1);
+        taskContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','monkeyTeam','Basic',1);
         %load up our task data:
-        taskSheet=readtable(taskFile,'FileType','spreadsheet','sheet','Jobs');
+        taskSheet=readtable(taskFile,'FileType','spreadsheet','sheet','Jobs','Basic',1);
         %check taskSheet dates for wonky formatting and convert them to
         %datenums if necessary:
         taskSheet.dateDue=datenum(datetime(taskSheet.dateDue,'ConvertFrom','excel'));
@@ -257,7 +257,7 @@ function taskChecker()
                         %load the logging tab for this task:
                         jobName=taskSheet.Task{i};
                         jobName(jobName==' ')=[];
-                        jobHistory=readtable(taskFile,'FileType','spreadsheet','sheet',jobName,'ReadVariableNames',false);
+                        jobHistory=readtable(taskFile,'FileType','spreadsheet','sheet',jobName,'ReadVariableNames',false,'Basic',1);
                         %write a line at the end of the tab with the data
                         %currently in the Jobs page
                         tmp=taskSheet(i,:);

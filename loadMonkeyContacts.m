@@ -1,6 +1,6 @@
 function monkeyContactList = loadMonkeyContacts(MonkeyWaterLocation,contactData)    
     %[animal_xls_num,animal_xls,~] = xlsread(MonkeyWaterLocation,1,'','basic');
-    animalTable=readtable(MonkeyWaterLocation,'FileType','spreadsheet','sheet','Monkeys');
+    animalTable=readtable(MonkeyWaterLocation,'FileType','spreadsheet','sheet','Monkeys','Basic',1);
     %clear out garbage entries:
     animalTable=animalTable(:,cellfun(@isempty,strfind(animalTable.Properties.VariableNames,'Var')));
     primaryTable=[];

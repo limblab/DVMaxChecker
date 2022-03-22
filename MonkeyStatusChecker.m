@@ -3,8 +3,8 @@ function MonkeyStatusChecker()
     
     testing=0;
     [~,contactListLocation]=getMonkeyDataLocation();
-    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin');
-    taskContacts=readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam');
+    adminContacts = readtable(contactListLocation,'FileType','spreadsheet','sheet','admin','Basic',1);
+    taskContacts=readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam','Basic',1);
 
     
     time = clock;
@@ -50,7 +50,7 @@ function MonkeyStatusChecker()
             sent_email = 0;
             disp(['working on monkey: ',animalList(iMonkey).animalName])
             %load up our monkey status data:
-            statusSheet=readtable(taskFile,'FileType','spreadsheet','sheet',animalList(iMonkey).animalName,'ReadVariableNames',true);
+            statusSheet=readtable(taskFile,'FileType','spreadsheet','sheet',animalList(iMonkey).animalName,'ReadVariableNames',true,'Basic',1);
 
             statusSheet.DueDate=datenum(datetime(statusSheet.DueDate,'ConvertFrom','excel'));
             statusSheet.DateCompleted=datenum(datetime(statusSheet.DateCompleted,'ConvertFrom','excel'));

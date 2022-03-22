@@ -10,8 +10,8 @@ function trainingChecker()
         
         [~,contactsFile]=getMonkeyDataLocation();
         %get monkey staff data:
-        adminContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','admin');
-        xlsData=readtable(contactsFile,'FileType','spreadsheet','sheet','monkeyTeam');
+        adminContacts=readtable(contactsFile,'FileType','spreadsheet','sheet','admin','Basic',1);
+        xlsData=readtable(contactsFile,'FileType','spreadsheet','sheet','monkeyTeam','Basic',1);
         %convert datetimes into datenums if needed:
         xlsData.TrainingDocumentedDate=datenum(datetime(xlsData.TrainingDocumentedDate,'ConvertFrom','excel'));
         %set contacts for the checker

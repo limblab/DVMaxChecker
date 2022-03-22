@@ -21,4 +21,5 @@ function loadDatabaseDrivers()
         %path_file_text = [path_file_text 10 uint8([current_folder filesep 'ojdbc6.jar'])];
         javaaddpath([current_folder filesep 'ojdbc6.jar'],'-end')
     end
+    
 end

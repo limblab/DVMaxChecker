@@ -17,7 +17,7 @@ function monkeyContactUpdater()
             end
         end
 
-        peopleList = readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam');
+        peopleList = readtable(contactListLocation,'FileType','spreadsheet','sheet','monkeyTeam','Basic',1);
         animalList = loadMonkeyContacts(MonkeyWaterLocation,peopleList);
         save('animalList','animalList')    
         animalList2=animalList;
@@ -27,7 +27,7 @@ function monkeyContactUpdater()
                 animalList2=rmfield(animalList2,fields{i});
             end
         end
-        ccmList = readtable(contactListLocation,'FileType','spreadsheet','sheet','CCM'); 
+        ccmList = readtable(contactListLocation,'FileType','spreadsheet','sheet','CCM','Basic',1); 
 
         if ~isequal(animalList2,oldAnimalList2) || 1==1
             subject = 'NHP caretaker list update';
